@@ -6,6 +6,7 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const authRoutes = require('./routes/authRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 const keys = require('./config/keys');
 const morgan = require('morgan');
 require('./models/User');
@@ -37,6 +38,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(authRoutes);
+app.use(reviewRoutes)
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
