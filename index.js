@@ -38,7 +38,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(authRoutes);
-app.use(reviewRoutes)
+app.use(reviewRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

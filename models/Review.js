@@ -1,14 +1,14 @@
-import { StringDecoder } from 'string_decoder';
-
 'use strict';
 
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
 
-const reviewSchema = new Schema ({
+
+const reviewSchema = new mongoose.Schema ({
   rating: {type: Number, required: true},
   moment: {type: String},
-  _user: {type:  Schema.Types.ObjectID, ref: 'User'}
+  _user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
-mongoose.model('reviews', reviewSchema)
+const Review = mongoose.model('Review', reviewSchema);
+
+module.exports = Review;

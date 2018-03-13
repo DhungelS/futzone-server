@@ -1,10 +1,10 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
 
-const userSchema = new Schema({
+
+const userSchema = new mongoose.Schema({
   googleId: String
 });
 
-mongoose.model('users', userSchema);
+const User = mongoose.model('users', userSchema);
