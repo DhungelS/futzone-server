@@ -5,14 +5,16 @@ const mongoose = require('mongoose');
 
 const Review = require('../models/Review');
 
+
 router.get('/api/reviews', (req, res, next) => {
   if (!req.user) {
     return res.status(401).send({ error: 'You must sign in first.' });
   }
 
-  Review.find()
+  Review.find({ _user: req.user.id })
     .select('rating moment')
     .then(results => {
+      console.log(results);
       res.json(results);
     });
 });
@@ -23,7 +25,7 @@ router.post('/api/reviews', (req, res, next) => {
   }
 
   const { rating, moment } = req.body;
-  const reviewItem = { rating, moment };
+  const reviewItem = { rating, moment, _user: req.user.id };
 
   if (!rating) {
     const err = new Error('Missing `rating` in request body');
