@@ -1,0 +1,34 @@
+.nav{
+  background: linear-gradient(to right, #11998e, #38ef7d);
+  list-style-type: none;
+  overflow: hidden;
+}
+
+ul li{
+  float: left;
+}
+
+li .nav-item {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li .nav-item:hover:not(.active) {
+  background-color: #D3D3D3;
+}
+
+.active {
+  background-color: #6A5ACD;
+}
+
+.right {
+ float: right;
+}
+
+a .logo { /* whatever the fixed height of the bar is */
+  height: 15px;
+  display: block;
+}
