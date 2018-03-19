@@ -1,0 +1,41 @@
+.landing {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.banner {
+  text-align: center;
+  background-image: url(../../images/banner.png);
+  height: 50vh;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.heading-text{
+  width: 500px;
+  display: inline-block;
+  margin-top: 25px;
+  color: white;
+  font-size: 70px;
+  background-color: green;
+  -webkit-clip-path: polygon(100% 0%, 75% 50%, 100% 100%, 25% 100%, 0% 50%, 25% 0%);
+clip-path: polygon(100% 0%, 75% 50%, 100% 100%, 25% 100%, 0% 50%, 25% 0%);
+background-color: #6A5BC7;
+}
+
+.info-text {
+  padding-top: 100px;
+  font-size: 25px;
+  word-wrap: break-word;
+  height: 50%;
+  -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  background: linear-gradient(to right, #11998e, #38ef7d);
+}
+
+.info {
+background-color: #6A5CC2;
+font-size: 25px;
+color: white;
+}
