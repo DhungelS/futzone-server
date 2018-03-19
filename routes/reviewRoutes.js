@@ -12,7 +12,7 @@ router.get('/api/reviews', (req, res, next) => {
   }
 
   Review.find({ _user: req.user.id })
-    .select('rating moment')
+    .select('rating moment match')
     .then(results => {
       console.log(results);
       res.json(results);
