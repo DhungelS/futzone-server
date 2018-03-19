@@ -10,9 +10,9 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
-    "client": "npm run start --prefix ../client",
+    "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix deploy-client && npm run build --prefix deploy-client"
   },
   "author": "Saugat Dhungel",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "mongoose": "^5.0.9",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
+    "passport-google-oauth-jwt": "^0.2.3",
     "passport-google-oauth20": "^1.0.0"
   }
 }
