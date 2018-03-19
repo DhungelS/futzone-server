@@ -24,10 +24,10 @@ router.post('/api/reviews', (req, res, next) => {
     return res.status(401).send({ error: 'You must sign in first.' });
   }
 
-  const { rating, moment } = req.body;
-  const reviewItem = { rating, moment, _user: req.user.id };
+  const { match, rating, moment } = req.body;
+  const reviewItem = { match, rating, moment, _user: req.user.id };
 
-  if (!rating) {
+  if (!match) {
     const err = new Error('Missing `rating` in request body');
     err.status = 400;
     return next(err);
@@ -40,7 +40,13 @@ router.post('/api/reviews', (req, res, next) => {
         .status(201)
         .json(result);
     })
-    .catch(next);
+    .catch(err => {
+      if (err.code === 11000) {
+        err = new Error('A review for this match already exists');
+        err.status = 400;
+      }
+      next(err);
+    });
 });
 
 router.delete('/api/reviews/:id', (req, res, next) => {
