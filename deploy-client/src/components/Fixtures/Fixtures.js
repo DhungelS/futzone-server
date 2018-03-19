@@ -105,7 +105,11 @@ export class Fixtures extends Component {
     const reviews = this.props.reviews.map((review, index) => {
       return (
         <li className="review-item" key={review._id}>
+<<<<<<< HEAD
           Match: <h4>{review.match}</h4> Rating: <h3>{review.rating}</h3> Review: {review.moment}
+=======
+          <h4>{review.match}</h4> <p>{review.rating}</p> {review.moment}
+>>>>>>> 8d4d68d5ec44f5a4c91aa519a6e9fce13b3ccbaa
           <div onClick={() => this.reviewDeleteHandler(review._id)}>
             <i className="fa fa-trash-o fa-fw" />
           </div>
@@ -152,7 +156,11 @@ export class Fixtures extends Component {
                   little
                 >
                   <div>
+<<<<<<< HEAD
                     <h1 className="reviews-heading">Reviews</h1>
+=======
+                    <h1>Previous Reviews</h1>
+>>>>>>> 8d4d68d5ec44f5a4c91aa519a6e9fce13b3ccbaa
                     <form
                       className="review-form"
                       onSubmit={e =>
@@ -163,14 +171,20 @@ export class Fixtures extends Component {
                       }
                     >
                       <textarea
+<<<<<<< HEAD
                         maxlength="125"
+=======
+>>>>>>> 8d4d68d5ec44f5a4c91aa519a6e9fce13b3ccbaa
                         value={this.state.moment}
                         onChange={e =>
                           this.setState({ moment: e.target.value })
                         }
                       />
                       <select
+<<<<<<< HEAD
                         className="rating-select"
+=======
+>>>>>>> 8d4d68d5ec44f5a4c91aa519a6e9fce13b3ccbaa
                         value={this.state.rating}
                         onChange={e =>
                           this.setState({
@@ -185,7 +199,11 @@ export class Fixtures extends Component {
                         <option value="4">4</option>
                         <option value="5">5</option>
                       </select>
+<<<<<<< HEAD
                       <input className="form-submit-btn" type="submit" />
+=======
+                      <input type="submit" />
+>>>>>>> 8d4d68d5ec44f5a4c91aa519a6e9fce13b3ccbaa
                     </form>
                     <ul className="review-list">{reviews}</ul>
                   </div>

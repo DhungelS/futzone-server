@@ -130,6 +130,7 @@
   word-wrap: break-word;
 }
 
+<<<<<<< HEAD
 .reviews-heading {
 text-align: center;
 }
@@ -152,6 +153,22 @@ text-align: center;
   color: red;
   margin: 5px;
 }
+=======
+.review-list {
+  display: flex;
+  flex-direction: row;
+}
+
+.review-item {
+  display: flex;
+  flex-direction: column;
+  background-color: #6a5acd;
+  color: white;
+  margin: 5px;
+  font-size: 25px;
+}
+
+>>>>>>> 8d4d68d5ec44f5a4c91aa519a6e9fce13b3ccbaa
 .match {
   padding: 10px;
   border-radius: 50px 20px;
@@ -217,6 +234,7 @@ background-color: rgb(127, 116, 201)
 .highlights-modal-btn:hover{
 background-color: #6A5BC7
 }
+<<<<<<< HEAD
 
 .review-form {
   margin: 0 auto;
@@ -253,3 +271,5 @@ form .rating-select{
 }
 }
 
+=======
+>>>>>>> 8d4d68d5ec44f5a4c91aa519a6e9fce13b3ccbaa
