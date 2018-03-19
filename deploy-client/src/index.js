@@ -9,7 +9,7 @@ import './index.css';
 import App from './components/App';
 import reducers from './reducers';
 
-const middlwares = [createLogger(), thunk];
+const middlwares = [thunk];
 
 const store = createStore(
   reducers,
