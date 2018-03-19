@@ -186,6 +186,7 @@ export class Fixtures extends Component {
                         <option value="5">5</option>
                       </select>
                       <input className="form-submit-btn" type="submit" />
+                      </form>
                 </Modal>
 
                 <Modal
