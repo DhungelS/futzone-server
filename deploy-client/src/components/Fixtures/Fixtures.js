@@ -46,6 +46,7 @@ export class Fixtures extends Component {
     this.props.getLeagues();
   }
   handleLeagueSelect(link, id) {
+    console.log(link);
     this.setState(
       {
         showTeams: true,
@@ -77,17 +78,19 @@ export class Fixtures extends Component {
 
   _searchFilterAndMapLeagueItems = (searchTerm, itemtoFilter) => {
     const searchs = itemtoFilter
-      .map((league, index) => (
-        <li
+      .map((league, index) => {
+        const modifiedLink = league._links.teams.href.substr(0, 4) + "s" +league._links.teams.href.substr(4);
+
+         return (<li
           key={league.id}
           onClick={() =>
-            this.handleLeagueSelect(league._links.teams.href, league.id)
+            this.handleLeagueSelect(modifiedLink, league.id)
           }
           className="league"
         >
           <a className="league-caption">{league.caption}</a>
-        </li>
-      ))
+        </li>)
+      })
       .filter(league =>
         league.props.children.props.children.toUpperCase().includes(searchTerm.toUpperCase())
       );
