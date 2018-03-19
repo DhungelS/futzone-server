@@ -163,7 +163,7 @@ export class Fixtures extends Component {
                       }
                     >
                       <textarea
-                        maxlength="125"
+                        maxLength="125"
                         value={this.state.moment}
                         onChange={e =>
                           this.setState({ moment: e.target.value })
@@ -187,6 +187,7 @@ export class Fixtures extends Component {
                       </select>
                       <input className="form-submit-btn" type="submit" />
                       </form>
+                      {reviews}
                       </div>
                 </Modal>
 
