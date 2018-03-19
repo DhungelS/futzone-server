@@ -16,7 +16,7 @@ router.get(
     scope: 'https://www.googleapis.com/auth/plus.login'
   }),
   (req, res) => {
-    res.redirect('/fixtures');
+    res.redirect('/');
   }
 );
 

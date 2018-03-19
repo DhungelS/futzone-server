@@ -116,6 +116,7 @@
   max-width: 1000px !important;
   height: 95%;
   width: 100%;
+  overflow: hidden;
 }
 
 .highlights {
@@ -250,6 +251,10 @@ form .rating-select{
 @media (max-width:768px){
 .list{
   flex-direction: column;
+}
+
+.highlights img{
+  width: 80%;
 }
 }
 
