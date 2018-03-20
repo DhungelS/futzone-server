@@ -18,6 +18,7 @@ export class Fixtures extends Component {
       selectedLeague: '',
       openReviewModal: false,
       openSecondModal: false,
+      selectedMatch: null,
       moment: '',
       rating: 1,
       term: '',
@@ -25,9 +26,9 @@ export class Fixtures extends Component {
     };
   }
 
-  onOpenReviewModal = matchId => {
-    this.setState({ openReviewModal: true });
-    this.props.fetchReviewData(matchId);
+  onOpenReviewModal = match => {
+    this.setState({ openReviewModal: true, selectedMatch: match });
+    this.props.fetchReviewData(generateMatchId(match));
   };
 
   onCloseReviewModal = () => {
@@ -52,11 +53,11 @@ export class Fixtures extends Component {
     this.setState(
       {
         showTeams: true,
-        selectedLeague: id
+        selectedLeague: id,
       },
       () => {
         this.props.getTeams(link, id);
-      }
+      },
     );
   }
 
@@ -64,19 +65,20 @@ export class Fixtures extends Component {
     this.props.getMatches(link);
   }
 
-  reviewPostHandler(event, match) {
-    console.log(match);
+  reviewPostHandler = event => {
     event.preventDefault();
+    if (!this.state.selectedMatch) {
+      return;
+    }
     this.props.postReviewData({
-      match: generateMatchId(match),
+      match: generateMatchId(this.state.selectedMatch),
       moment: this.state.moment,
-      rating: this.state.rating
+      rating: this.state.rating,
     });
   };
 
   reviewDeleteHandler(delId, getId) {
     this.props.deleteReviewItem(delId);
-
   }
 
   _searchFilterAndMapLeagueItems = (searchTerm, itemtoFilter) => {
@@ -100,12 +102,12 @@ export class Fixtures extends Component {
       .filter(league =>
         league.props.children.props.children
           .toUpperCase()
-          .includes(searchTerm.toUpperCase())
+          .includes(searchTerm.toUpperCase()),
       );
 
     this.setState({
       term: searchTerm,
-      searchs
+      searchs,
     });
   };
 
@@ -125,93 +127,23 @@ export class Fixtures extends Component {
       );
     });
 
-    const matches =  this.props.matches.map((match, index) => {
-
-      return (  
-          <div key={index}>
-            <Matches
-              key={index}
-              match={match}
-              onOpenReviewModal={ () =>
-                this.onOpenReviewModal(` ${match.homeTeamName} vs ${
-                  match.awayTeamName
-                }
-              `)
+    const matches = this.props.matches.map((match, index) => {
+      return (
+        <div key={index}>
+          <Matches
+            key={index}
+            match={match}
+            onOpenReviewModal={() => this.onOpenReviewModal(match)}
+            onOpenSecondModal={() =>
+              this.onOpenSecondModal(` ${match.homeTeamName} vs ${
+                match.awayTeamName
               }
-              onOpenSecondModal={() =>
-                this.onOpenSecondModal(` ${match.homeTeamName} vs ${
-                  match.awayTeamName
-                }
               `)
-              }
-            />
-
-            <Modal
-              classNames={{
-                overlay: 'custom-overlay',
-                modal: 'custom-modal'
-              }}
-              open={this.state.openReviewModal}
-              onClose={this.onCloseReviewModal}
-              little
-            >
-              <div>
-                <h1 className="reviews-heading">Reviews</h1>
-                <form
-                  className="review-form"
-                  onSubmit={e =>
-                    this.reviewPostHandler(
-                      e, match)
-                  }
-                >
-                  <textarea
-                    maxLength="125"
-                    value={this.state.moment}
-                    onChange={e =>
-                      this.setState({ moment: e.target.value })
-                    }
-                  />
-                  <select
-                    className="rating-select"
-                    value={this.state.rating}
-                    onChange={e =>
-                      this.setState({
-                        rating: e.target.value
-                      })
-                    }
-                    name="rating"
-                  >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
-                  <input className="form-submit-btn" type="submit" />
-                </form>
-                {reviews}
-              </div>
-            </Modal>
-
-            <Modal
-              classNames={{
-                overlay: 'custom-overlay',
-                modal: 'custom-modal'
-              }}
-              open={this.state.openSecondModal}
-              onClose={this.onCloseSecondModal}
-              little
-            >
-              <Highlights
-                matchSelected={` ${match.homeTeamName} vs ${
-                  match.awayTeamName
-                }`}
-              />
-            </Modal>
-          </div>
-          )
-        })
-        
+            }
+          />
+        </div>
+      );
+    });
 
     return (
       <div className="fixtures">
@@ -219,7 +151,7 @@ export class Fixtures extends Component {
           searchAndFilter={e =>
             this._searchFilterAndMapLeagueItems(
               e.target.value,
-              this.props.leagues
+              this.props.leagues,
             )
           }
           value={this.state.term}
@@ -227,9 +159,7 @@ export class Fixtures extends Component {
         <div className="list">
           <ul className="leagues-list">{this.state.searchs}</ul>
 
-          <ul className="match-list">
-          {matches}
-          </ul>
+          <ul className="match-list">{matches}</ul>
 
           <ul className="teams-list">
             {this.state.showTeams &&
@@ -243,16 +173,56 @@ export class Fixtures extends Component {
               ))}
           </ul>
         </div>
-        </div>
+        {this.state.selectedMatch && (
+          <Modal
+            classNames={{
+              overlay: 'custom-overlay',
+              modal: 'custom-modal',
+            }}
+            open={this.state.openReviewModal}
+            onClose={this.onCloseReviewModal}
+            little
+          >
+            <div>
+              <h1 className="reviews-heading">Reviews</h1>
+              {console.log('one modal')}
+              <form className="review-form" onSubmit={this.reviewPostHandler}>
+                <textarea
+                  maxLength="125"
+                  value={this.state.moment}
+                  onChange={e => this.setState({ moment: e.target.value })}
+                />
+                <select
+                  className="rating-select"
+                  value={this.state.rating}
+                  onChange={e =>
+                    this.setState({
+                      rating: e.target.value,
+                    })
+                  }
+                  name="rating"
+                >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                <input className="form-submit-btn" type="submit" />
+              </form>
+              {reviews}
+            </div>
+          </Modal>
+        )}
+      </div>
     );
   }
-
 }
 const mapStateToProps = state => ({
   leagues: state.soccerData.leagueData,
   teams: state.soccerData.teamData,
   matches: state.soccerData.matchData,
-  reviews: state.review.reviewData
+  reviews: state.review.reviewData,
 });
 
 export default connect(mapStateToProps, actions)(Fixtures);

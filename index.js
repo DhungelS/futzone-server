@@ -21,8 +21,8 @@ app.use(express.json());
 app.use(
   cors({
     origin: CLIENT_ORIGIN,
-    credentials: true
-  })
+    credentials: true,
+  }),
 );
 
 app.use(morgan('dev'));
@@ -30,8 +30,8 @@ app.use(morgan('dev'));
 app.use(
   cookieSession({
     maxAge: 15 * 24 * 60 * 60 * 1000,
-    keys: [keys.cookieKey]
-  })
+    keys: [keys.cookieKey],
+  }),
 );
 
 app.use(passport.initialize());
