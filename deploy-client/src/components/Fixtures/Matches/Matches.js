@@ -2,9 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
 import '../Fixtures.css';
-
+import {generateMatchId} from '../../../Utils/generateMatchId'
 
 import * as actions from '../../../actions';
+
+
 
 export function Matches(props) {
   return (
@@ -18,7 +20,7 @@ export function Matches(props) {
       </p>
       <button
         className="modal-btn"
-        onClick={() => props.onOpenReviewModal()}
+        onClick={() => props.onOpenReviewModal(generateMatchId(props.match))}
       >
         Reviews
       </button>

@@ -9,12 +9,25 @@ import './index.css';
 import App from './components/App';
 import reducers from './reducers';
 
-const middlwares = [thunk];
+const middlewares = [thunk];
+let enhancers;
+
+if (process.env.NODE_ENV === 'development') {
+  const { createLogger } = require('redux-logger');
+  middlewares.push(createLogger());
+
+  enhancers = compose(
+    applyMiddleware(...middlewares),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  );
+} else {
+  enhancers = applyMiddleware(...middlewares)
+}
 
 const store = createStore(
   reducers,
   {},
-  applyMiddleware(...middlwares)
+  enhancers
 );
 
 ReactDOM.render(

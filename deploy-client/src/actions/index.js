@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {YOUTUBE_API_KEY, SOCCER_API_KEY} from'../keys'
+import {YOUTUBE_API_KEY, SOCCER_API_KEY} from'../config'
 
 
 const BASE_URL = 'https://api.football-data.org/v1';
@@ -11,16 +11,16 @@ export const fetchUser = () => dispatch => {
     .catch(err => dispatch({ type: 'FETCH_USER_ERROR', payload: err }));
 };
 
-export const fetchReviewData = () => dispatch => {
+export const fetchReviewData = (id) => dispatch => {
   axios
-    .get('/api/reviews')
+    .get(`/api/reviews/${id}`)
     .then(res =>
       dispatch({ type: 'FETCH_REVIEW_DATA_SUCCESS', payload: res.data })
     )
     .catch(err => dispatch({ type: 'FETCH_REVIEW_DATA_FAILURE', payload: err }));
 };
 
-export const postReviewData = values => dispatch => {
+export const postReviewData = (values) => dispatch => {
   axios
     .post('/api/reviews', values)
     .then(res =>

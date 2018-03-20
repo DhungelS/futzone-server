@@ -28,8 +28,7 @@ export default function(state = initialState, action) {
       }
       case 'DELETE_REVIEW_ITEM_SUCCESS':
       return {
-        ...state,
-        
+        ...state
       }
     default:
       return state;

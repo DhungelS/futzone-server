@@ -6,15 +6,17 @@ const mongoose = require('mongoose');
 const Review = require('../models/Review');
 
 
-router.get('/api/reviews', (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).send({ error: 'You must sign in first.' });
-  }
 
-  Review.find({ _user: req.user.id })
+router.get('/api/reviews/:id', (req, res, next) => {
+
+  const {id} = req.params;
+  // if (!req.user) {
+  //   return res.status(401).send({ error: 'You must sign in first.' });
+  // }
+
+  Review.find({match:id})
     .select('rating moment match')
     .then(results => {
-      console.log(results);
       res.json(results);
     });
 });
