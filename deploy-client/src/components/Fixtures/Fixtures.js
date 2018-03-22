@@ -134,7 +134,7 @@ export class Fixtures extends Component {
         <li className="review-item" key={review._id}>
           Match: <h4>{review.match}</h4> Rating: <h3>{review.rating}</h3>
           Review: <p>{review.moment}</p>
-          User: {this.props.auth._id === review._user._id ? <p> You </p> : <p> {review.name} </p>}
+          User: {this.props.auth._id === review._user._id ? <p> You </p> : <p> {review._user.name} </p>}
           <div
             onClick={() => this.reviewDeleteHandler(review._id, review.match)}
           >
