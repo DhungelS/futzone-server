@@ -10,6 +10,8 @@ import * as actions from '../../actions';
 import './Fixtures.css';
 import { generateMatchId } from '../../Utils/generateMatchId';
 
+import { CustomModal } from '../Modal';
+
 export class Fixtures extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +26,7 @@ export class Fixtures extends Component {
       moment: '',
       rating: 1,
       term: '',
-      searchs: ''
+      searchs: '',
     };
   }
 
@@ -38,7 +40,7 @@ export class Fixtures extends Component {
   };
 
   onCloseReviewModal = () => {
-    this.setState({ openReviewModal: false });
+    this.setState({ openReviewModal: false, isEditMode: false });
   };
 
   onOpenSecondModal = highlightVids => {
@@ -54,11 +56,11 @@ export class Fixtures extends Component {
     this.setState(
       {
         showTeams: true,
-        selectedLeague: id
+        selectedLeague: id,
       },
       () => {
         this.props.getTeams(link, id);
-      }
+      },
     );
   }
 
@@ -66,48 +68,43 @@ export class Fixtures extends Component {
     this.props.getMatches(link);
   }
 
-  reviewPostHandler = event => {
-    event.preventDefault();
+  updateReview = review => {
+    console.log('====================================');
+    console.log('IM UPDATEING', review);
+    console.log('====================================');
+    this.props.updateReviewItem(this.state.matchToUpdateId, {
+      moment: review.moment,
+      rating: review.rating,
+    });
+  };
+
+  reviewPostHandler = () => {
     if (!this.state.selectedMatch) {
       return;
     }
 
-    if(this.state.handlingUpdateReview){
-    this.props.updateReviewItem(this.state.matchToUpdateId,{
-      moment: this.state.moment,
-      rating: this.state.rating
-    });
-
+    if (this.state.handlingUpdateReview) {
+      this.props.updateReviewItem(this.state.matchToUpdateId, {
+        moment: this.state.moment,
+        rating: this.state.rating,
+      });
+    } else {
+      this.props.postReviewData({
+        match: generateMatchId(this.state.selectedMatch),
+        moment: this.state.moment,
+        rating: this.state.rating,
+      });
     }
-    
-else {
-    this.props.postReviewData({
-      match: generateMatchId(this.state.selectedMatch),
-      moment: this.state.moment,
-      rating: this.state.rating
-    });
-  }
 
     this.setState({
       moment: '',
-      rating: 1
+      rating: 1,
     });
   };
 
-  handleReviewItemSelect = (cardRating, cardMoment, matchToUpdateId) => {
-    this.setState({
-      rating: cardRating,
-      moment: cardMoment,
-      handlingUpdateReview: true,
-      matchToUpdateId
-    });
-
-
-  };
-
-  reviewDeleteHandler(delId) {
+  reviewDeleteHandler = delId => {
     this.props.deleteReviewItem(delId);
-  }
+  };
 
   _searchFilterAndMapLeagueItems = (searchTerm, itemtoFilter) => {
     const searchs = itemtoFilter
@@ -130,50 +127,16 @@ else {
       .filter(league =>
         league.props.children.props.children
           .toUpperCase()
-          .includes(searchTerm.toUpperCase())
+          .includes(searchTerm.toUpperCase()),
       );
 
     this.setState({
       term: searchTerm,
-      searchs
+      searchs,
     });
   };
 
   render() {
-    const reviews = this.props.reviews.map((review, index) => {
-      console.log(review);
-      return (
-        <li
-          onClick={() =>
-            this.handleReviewItemSelect(
-              review.rating,
-              review.moment,
-              review.match
-            )
-          }
-          className="review-item"
-          key={review._id}
-        >
-          Match: <h4>{review.match}</h4> Rating: <h3>{review.rating}</h3>
-          Review: <p>{review.moment}</p>
-          User:{' '}
-          {this.props.auth._id === review._user._id ? (
-            <p> You </p>
-          ) : (
-            <p> {review._user.name} </p>
-          )}
-          <div
-            className="trash-icon-div"
-            onClick={() => this.reviewDeleteHandler(review._id, review.match)}
-          >
-            {this.props.auth._id === review._user._id ? (
-              <i className="fa fa-trash-o fa-fw" />
-            ) : null}
-          </div>
-        </li>
-      );
-    });
-
     const matches = this.props.matches.map((match, index) => {
       return (
         <div key={index}>
@@ -198,7 +161,7 @@ else {
           searchAndFilter={e =>
             this._searchFilterAndMapLeagueItems(
               e.target.value,
-              this.props.leagues
+              this.props.leagues,
             )
           }
           value={this.state.term}
@@ -221,54 +184,23 @@ else {
           </ul>
         </div>
         {this.state.selectedMatch && (
-          <Modal
-            classNames={{
-              overlay: 'custom-overlay',
-              modal: 'custom-modal'
+          <CustomModal
+            params={{
+              reviewPostHandler: this.reviewPostHandler,
+              reviews: this.props.reviews,
+              reviewDeleteHandler: this.reviewDeleteHandler,
+              updateReview: this.updateReview,
             }}
-            open={this.state.openReviewModal}
-            onClose={this.onCloseReviewModal}
-            little
-          >
-            <div>
-              <h1 className="reviews-heading">Reviews</h1>
-              {console.log('one modal')}
-              <form
-                className="review-form"
-                onSubmit={e => this.reviewPostHandler(e)}
-              >
-                <textarea
-                  maxLength="125"
-                  value={this.state.moment}
-                  onChange={e => this.setState({ moment: e.target.value })}
-                />
-                <select
-                  className="rating-select"
-                  value={this.state.rating}
-                  onChange={e =>
-                    this.setState({
-                      rating: e.target.value
-                    })
-                  }
-                  name="rating"
-                >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-                <input className="form-submit-btn" type="submit" />
-              </form>
-              {reviews}
-            </div>
-          </Modal>
+            modalType="REVIEW"
+            handleClose={this.onCloseReviewModal}
+            isOpen={this.state.openReviewModal}
+          />
         )}
 
         <Modal
           classNames={{
             overlay: 'custom-overlay',
-            modal: 'custom-modal'
+            modal: 'custom-modal',
           }}
           open={this.state.openSecondModal}
           onClose={this.onCloseSecondModal}
@@ -285,7 +217,7 @@ const mapStateToProps = state => ({
   teams: state.soccerData.teamData,
   matches: state.soccerData.matchData,
   reviews: state.review.reviewData,
-  auth: state.auth.userData
+  auth: state.auth.userData,
 });
 
 export default connect(mapStateToProps, actions)(Fixtures);
