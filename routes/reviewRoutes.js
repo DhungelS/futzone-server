@@ -35,7 +35,8 @@ router.put('/api/reviews/:matchId', (req, res, next) => {
   const options = { new: true };
 
   Review.findOneAndUpdate({ match: matchId }, updateObj, options)
-    .select('rating moment match')
+    .select('rating moment match _id')
+    .populate('_user')
     .then(result => {
       res.json(result);
     })

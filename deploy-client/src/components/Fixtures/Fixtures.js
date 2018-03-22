@@ -19,13 +19,14 @@ export class Fixtures extends Component {
       openReviewModal: false,
       openSecondModal: false,
       selectedMatch: null,
+      handlingUpdateReview: false,
+      matchToUpdateId: null,
       moment: '',
       rating: 1,
       term: '',
       searchs: ''
     };
   }
-
 
   componentDidMount() {
     this.props.getLeagues();
@@ -49,7 +50,6 @@ export class Fixtures extends Component {
     this.setState({ openSecondModal: false });
   };
 
-
   handleLeagueSelect(link, id) {
     this.setState(
       {
@@ -71,33 +71,45 @@ export class Fixtures extends Component {
     if (!this.state.selectedMatch) {
       return;
     }
+
+    if(this.state.handlingUpdateReview){
+    this.props.updateReviewItem(this.state.matchToUpdateId,{
+      moment: this.state.moment,
+      rating: this.state.rating
+    });
+
+    }
+    
+else {
     this.props.postReviewData({
       match: generateMatchId(this.state.selectedMatch),
       moment: this.state.moment,
       rating: this.state.rating
     });
+  }
 
     this.setState({
-     moment: '',
-     rating: 1
-    })
+      moment: '',
+      rating: 1
+    });
+  };
+
+  handleReviewItemSelect = (cardRating, cardMoment, matchToUpdateId) => {
+    this.setState({
+      rating: cardRating,
+      moment: cardMoment,
+      handlingUpdateReview: true,
+      matchToUpdateId
+    });
+
+
   };
 
   reviewDeleteHandler(delId) {
     this.props.deleteReviewItem(delId);
   }
 
-  updateReviewHandler(e, id){
-    if(e.key === 'Enter'){
-      this.props.updateReviewitem(generateMatchId(id), {
-        moment: this.state.moment
-      })
-    }
-  }
-
   _searchFilterAndMapLeagueItems = (searchTerm, itemtoFilter) => {
-
-
     const searchs = itemtoFilter
       .map((league, index) => {
         const modifiedLink =
@@ -125,20 +137,38 @@ export class Fixtures extends Component {
       term: searchTerm,
       searchs
     });
-  }
+  };
 
   render() {
     const reviews = this.props.reviews.map((review, index) => {
       console.log(review);
       return (
-        <li className="review-item" key={review._id}>
+        <li
+          onClick={() =>
+            this.handleReviewItemSelect(
+              review.rating,
+              review.moment,
+              review.match
+            )
+          }
+          className="review-item"
+          key={review._id}
+        >
           Match: <h4>{review.match}</h4> Rating: <h3>{review.rating}</h3>
           Review: <p>{review.moment}</p>
-          User: {this.props.auth._id === review._user._id ? <p> You </p> : <p> {review._user.name} </p>}
+          User:{' '}
+          {this.props.auth._id === review._user._id ? (
+            <p> You </p>
+          ) : (
+            <p> {review._user.name} </p>
+          )}
           <div
+            className="trash-icon-div"
             onClick={() => this.reviewDeleteHandler(review._id, review.match)}
           >
-           {this.props.auth._id === review._user._id ? <i className="fa fa-trash-o fa-fw" /> : null}
+            {this.props.auth._id === review._user._id ? (
+              <i className="fa fa-trash-o fa-fw" />
+            ) : null}
           </div>
         </li>
       );
@@ -174,15 +204,10 @@ export class Fixtures extends Component {
           value={this.state.term}
         />
         <div className="list">
-       
           <ul className="leagues-list">{this.state.searchs}</ul>
-         
 
-         
           <ul className="match-list">{matches}</ul>
-         
 
-         
           <ul className="teams-list">
             {this.state.showTeams &&
               this.props.teams[this.state.selectedLeague] &&
@@ -194,7 +219,6 @@ export class Fixtures extends Component {
                 />
               ))}
           </ul>
-         
         </div>
         {this.state.selectedMatch && (
           <Modal
@@ -209,7 +233,10 @@ export class Fixtures extends Component {
             <div>
               <h1 className="reviews-heading">Reviews</h1>
               {console.log('one modal')}
-              <form className="review-form" onSubmit={(e) => this.reviewPostHandler(e)}>
+              <form
+                className="review-form"
+                onSubmit={e => this.reviewPostHandler(e)}
+              >
                 <textarea
                   maxLength="125"
                   value={this.state.moment}
@@ -247,9 +274,7 @@ export class Fixtures extends Component {
           onClose={this.onCloseSecondModal}
           little
         >
-          <Highlights
-            matchSelected={this.state.selectedMatch}
-          />
+          <Highlights matchSelected={this.state.selectedMatch} />
         </Modal>
       </main>
     );

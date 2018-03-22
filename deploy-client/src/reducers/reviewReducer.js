@@ -39,7 +39,16 @@ export default function(state = initialState, action) {
       case 'UPDATE_REVIEW_ITEM_SUCCESS': 
       return {
         ...state,
-        reviewData: [...state.reviewData, action.payload]
+        reviewData: state.reviewData.map(ele => {
+          if(action.payload.id === ele._id){
+            return {
+              ...action.payload
+            }
+          }
+          else{
+            return ele
+          }
+        })
       }
       case 'UPDATE_REVIEW_ITEM_FAILURE': 
       return {
