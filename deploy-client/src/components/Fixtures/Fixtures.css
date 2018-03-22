@@ -10,7 +10,9 @@
   margin-top: 50px;
 }
 
-.leagues-list,
+
+
+ .leagues-list,
 .teams-list,
 .match-list {
   display: flex;
@@ -35,9 +37,10 @@
 }
 .leagues-list:empty,
 .match-list:empty,
-.teams-list:empty {
+.teams-list:empty{
   display: none;
 }
+
 
 .team,
 .league,
@@ -137,11 +140,12 @@ text-align: center;
 
 .review-item {
   display: inline-block;
- width: 23%;
+  width: 25%;
   background-color: #6a5acd;
   color: white;
   margin: 5px;
-  font-size: 17px;
+  font-size: 15px;
+  text-align:  center;
   word-wrap: break-word;
   overflow: hidden;
   padding: 5px;
@@ -149,9 +153,10 @@ text-align: center;
 }
 
 
-.review-item h3, h4{
+.review-item h3, .review-item h4, .review-item p{
   color: red;
   margin: 5px;
+  font-size: 20px;
 }
 .match {
   padding: 10px;

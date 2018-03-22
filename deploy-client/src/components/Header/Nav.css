@@ -28,7 +28,7 @@ li .nav-item:hover:not(.active) {
  float: right;
 }
 
-a .logo { /* whatever the fixed height of the bar is */
+li .logo { /* whatever the fixed height of the bar is */
   height: 15px;
   display: block;
 }

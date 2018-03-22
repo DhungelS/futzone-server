@@ -27,7 +27,7 @@ export function Matches(props) {
       <button
       className="modal-btn highlights-modal-btn"
         onClick={() => {
-          props.onOpenSecondModal();
+          props.onOpenSecondModal(props.match);
         }}
       >
         Highlights

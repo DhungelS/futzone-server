@@ -20,14 +20,43 @@ export const fetchReviewData = (id) => dispatch => {
     .catch(err => dispatch({ type: 'FETCH_REVIEW_DATA_FAILURE', payload: err }));
 };
 
-export const postReviewData = (values) => dispatch => {
+export const postReviewData = (values) => (dispatch, getState) => {
+  const user = getState().auth.userData
   axios
     .post('/api/reviews', values)
-    .then(res =>
-      dispatch({ type: 'CREATE_REVIEW_DATA_SUCCESS', payload: res.data })
-    )
-    .catch(err => dispatch({ type:'CREATE_REVIEW_DATA_FAILURE', payload: err }));
+    .then(res => {
+      console.log(res.data)
+      dispatch({ type: 'CREATE_REVIEW_DATA_SUCCESS', payload: 
+      {
+       ...res.data,
+      _user: user  
+      } 
+    })
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({ 
+      type:'CREATE_REVIEW_DATA_FAILURE', payload: err })
+    });
 };
+
+export const deleteReviewItem = (id) => dispatch => {
+  axios
+    .delete(`/api/reviews/${id}`)
+    .then(res =>
+      dispatch({ type: 'DELETE_REVIEW_ITEM_SUCCESS', payload: id })
+    )
+    .catch(err => dispatch({ type: 'DELETE_REVIEW_ITEM_FAILURE', payload: err }));
+};
+
+export const UpdateReviewItem = (id, values) => dispatch => {
+  axios
+  .put(`/api/reviews/${id}`, values)
+  .then(res => {
+    dispatch ({type: 'UPDATE_REVIEW_ITEM_SUCCESS', payload: res.data})
+  })
+  .catch(err => dispatch({type:'UPDATE_REVIEW_ITEM_FAILURE', payload: err}))
+}
 
 export const getLeagues = () => dispatch => {
   dispatch({ type: 'GET_LEAGUES_REQUEST' });
@@ -104,13 +133,4 @@ export const getHighlightVids = match => dispatch => {
   .catch(err => {
     return dispatch({type: 'GET_HIGHLIGHTS_ERROR', payload: err})
   })
-};
-
-export const deleteReviewItem = (id) => dispatch => {
-  axios
-    .delete(`/api/reviews/${id}`)
-    .then(res =>
-      dispatch({ type: 'DELETE_REVIEW_ITEM_SUCCESS', payload: res.data })
-    )
-    .catch(err => dispatch({ type: 'DELETE_REVIEW_ITEM_FAILURE', payload: err }));
 };

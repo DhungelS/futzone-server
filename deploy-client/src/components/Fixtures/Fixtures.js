@@ -22,8 +22,13 @@ export class Fixtures extends Component {
       moment: '',
       rating: 1,
       term: '',
-      searchs: [],
+      searchs: ''
     };
+  }
+
+
+  componentDidMount() {
+    this.props.getLeagues();
   }
 
   onOpenReviewModal = match => {
@@ -36,7 +41,6 @@ export class Fixtures extends Component {
   };
 
   onOpenSecondModal = highlightVids => {
-    console.log(highlightVids);
     this.setState({ openSecondModal: true });
     this.props.getHighlightVids(highlightVids);
   };
@@ -45,19 +49,16 @@ export class Fixtures extends Component {
     this.setState({ openSecondModal: false });
   };
 
-  componentDidMount() {
-    this.props.getLeagues();
-  }
+
   handleLeagueSelect(link, id) {
-    console.log(link);
     this.setState(
       {
         showTeams: true,
-        selectedLeague: id,
+        selectedLeague: id
       },
       () => {
         this.props.getTeams(link, id);
-      },
+      }
     );
   }
 
@@ -73,15 +74,30 @@ export class Fixtures extends Component {
     this.props.postReviewData({
       match: generateMatchId(this.state.selectedMatch),
       moment: this.state.moment,
-      rating: this.state.rating,
+      rating: this.state.rating
     });
+
+    this.setState({
+     moment: '',
+     rating: 1
+    })
   };
 
-  reviewDeleteHandler(delId, getId) {
+  reviewDeleteHandler(delId) {
     this.props.deleteReviewItem(delId);
   }
 
+  updateReviewHandler(e, id){
+    if(e.key === 'Enter'){
+      this.props.updateReviewitem(generateMatchId(id), {
+        moment: this.state.moment
+      })
+    }
+  }
+
   _searchFilterAndMapLeagueItems = (searchTerm, itemtoFilter) => {
+
+
     const searchs = itemtoFilter
       .map((league, index) => {
         const modifiedLink =
@@ -102,26 +118,27 @@ export class Fixtures extends Component {
       .filter(league =>
         league.props.children.props.children
           .toUpperCase()
-          .includes(searchTerm.toUpperCase()),
+          .includes(searchTerm.toUpperCase())
       );
 
     this.setState({
       term: searchTerm,
-      searchs,
+      searchs
     });
-  };
+  }
 
   render() {
     const reviews = this.props.reviews.map((review, index) => {
       console.log(review);
       return (
         <li className="review-item" key={review._id}>
-          Match: <h4>{review.match}</h4> Rating: <h3>{review.rating}</h3>{' '}
-          Review: {review.moment}
+          Match: <h4>{review.match}</h4> Rating: <h3>{review.rating}</h3>
+          Review: <p>{review.moment}</p>
+          User: {this.props.auth._id === review._user._id ? <p> You </p> : <p> {review.name} </p>}
           <div
             onClick={() => this.reviewDeleteHandler(review._id, review.match)}
           >
-            <i className="fa fa-trash-o fa-fw" />
+           {this.props.auth._id === review._user._id ? <i className="fa fa-trash-o fa-fw" /> : null}
           </div>
         </li>
       );
@@ -146,21 +163,26 @@ export class Fixtures extends Component {
     });
 
     return (
-      <div className="fixtures">
+      <main className="fixtures" role="main">
         <Search
           searchAndFilter={e =>
             this._searchFilterAndMapLeagueItems(
               e.target.value,
-              this.props.leagues,
+              this.props.leagues
             )
           }
           value={this.state.term}
         />
         <div className="list">
+       
           <ul className="leagues-list">{this.state.searchs}</ul>
+         
 
+         
           <ul className="match-list">{matches}</ul>
+         
 
+         
           <ul className="teams-list">
             {this.state.showTeams &&
               this.props.teams[this.state.selectedLeague] &&
@@ -172,12 +194,13 @@ export class Fixtures extends Component {
                 />
               ))}
           </ul>
+         
         </div>
         {this.state.selectedMatch && (
           <Modal
             classNames={{
               overlay: 'custom-overlay',
-              modal: 'custom-modal',
+              modal: 'custom-modal'
             }}
             open={this.state.openReviewModal}
             onClose={this.onCloseReviewModal}
@@ -186,7 +209,7 @@ export class Fixtures extends Component {
             <div>
               <h1 className="reviews-heading">Reviews</h1>
               {console.log('one modal')}
-              <form className="review-form" onSubmit={this.reviewPostHandler}>
+              <form className="review-form" onSubmit={(e) => this.reviewPostHandler(e)}>
                 <textarea
                   maxLength="125"
                   value={this.state.moment}
@@ -197,7 +220,7 @@ export class Fixtures extends Component {
                   value={this.state.rating}
                   onChange={e =>
                     this.setState({
-                      rating: e.target.value,
+                      rating: e.target.value
                     })
                   }
                   name="rating"
@@ -214,7 +237,21 @@ export class Fixtures extends Component {
             </div>
           </Modal>
         )}
-      </div>
+
+        <Modal
+          classNames={{
+            overlay: 'custom-overlay',
+            modal: 'custom-modal'
+          }}
+          open={this.state.openSecondModal}
+          onClose={this.onCloseSecondModal}
+          little
+        >
+          <Highlights
+            matchSelected={this.state.selectedMatch}
+          />
+        </Modal>
+      </main>
     );
   }
 }
@@ -223,6 +260,7 @@ const mapStateToProps = state => ({
   teams: state.soccerData.teamData,
   matches: state.soccerData.matchData,
   reviews: state.review.reviewData,
+  auth: state.auth.userData
 });
 
 export default connect(mapStateToProps, actions)(Fixtures);
