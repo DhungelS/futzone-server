@@ -7,7 +7,7 @@ const reviewSchema = new mongoose.Schema ({
   match: {type: String},
   rating: {type: Number, required: true},
   moment: {type: String},
-  _user: {type: mongoose.Schema.Types.ObjectId, ref: 'users'},
+  _user: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
 });
 
 

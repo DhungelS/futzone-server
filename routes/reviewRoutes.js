@@ -14,9 +14,9 @@ router.get('/api/reviews', (req, res) => {
 router.get('/api/reviews/:matchId', (req, res, next) => {
   const { matchId } = req.params;
 
-  if (!req.user) {
-    return res.status(401).send({ error: 'You must sign in first.' });
-  }
+  // if (!req.user) {
+  //   return res.status(401).send({ error: 'You must sign in first.' });
+  // }
 
   Review.find({ match: matchId })
     .select('rating moment match _user')
