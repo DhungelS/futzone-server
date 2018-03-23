@@ -1,6 +1,5 @@
 import axios from 'axios';
-import {YOUTUBE_API_KEY, SOCCER_API_KEY} from'../keys'
-
+import { YOUTUBE_API_KEY, SOCCER_API_KEY } from '../config';
 
 const BASE_URL = 'https://api.football-data.org/v1';
 
@@ -11,22 +10,64 @@ export const fetchUser = () => dispatch => {
     .catch(err => dispatch({ type: 'FETCH_USER_ERROR', payload: err }));
 };
 
-export const fetchReviewData = () => dispatch => {
+export const fetchReviewData = id => dispatch => {
   axios
-    .get('/api/reviews')
+    .get(`/api/reviews/${id}`)
     .then(res =>
       dispatch({ type: 'FETCH_REVIEW_DATA_SUCCESS', payload: res.data })
     )
-    .catch(err => dispatch({ type: 'FETCH_REVIEW_DATA_FAILURE', payload: err }));
+    .catch(err =>
+      dispatch({ type: 'FETCH_REVIEW_DATA_FAILURE', payload: err })
+    );
 };
 
-export const postReviewData = values => dispatch => {
+export const postReviewData = values => (dispatch, getState) => {
+  const user = getState().auth.userData;
   axios
     .post('/api/reviews', values)
-    .then(res =>
-      dispatch({ type: 'CREATE_REVIEW_DATA_SUCCESS', payload: res.data })
-    )
-    .catch(err => dispatch({ type:'CREATE_REVIEW_DATA_FAILURE', payload: err }));
+    .then(res => {
+      console.log(res.data);
+      dispatch({
+        type: 'CREATE_REVIEW_DATA_SUCCESS',
+        payload: {
+          ...res.data,
+          _user: user
+        }
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({
+        type: 'CREATE_REVIEW_DATA_FAILURE',
+        payload: err
+      });
+    });
+};
+
+export const deleteReviewItem = id => dispatch => {
+  axios
+    .delete(`/api/reviews/${id}`)
+    .then(res => dispatch({ type: 'DELETE_REVIEW_ITEM_SUCCESS', payload: id }))
+    .catch(err =>
+      dispatch({ type: 'DELETE_REVIEW_ITEM_FAILURE', payload: err })
+    );
+};
+
+export const updateReviewItem = (id, values) => dispatch => {
+  axios
+    .put(`/api/reviews/${id}`, values)
+    .then(res => {
+      dispatch({
+        type: 'UPDATE_REVIEW_ITEM_SUCCESS',
+        payload: {
+          ...res.data,
+          id
+        }
+      });
+    })
+    .catch(err =>
+      dispatch({ type: 'UPDATE_REVIEW_ITEM_FAILURE', payload: err })
+    );
 };
 
 export const getLeagues = () => dispatch => {
@@ -42,16 +83,8 @@ export const getLeagues = () => dispatch => {
     .catch(err => dispatch({ type: 'GET_LEAGUES_ERROR', payload: err }));
 };
 
-export const getTeams = (url, leagueId) => (dispatch, getState) => {
+export const getTeams = (url) => (dispatch) => {
   dispatch({ type: 'GET_TEAMS_REQUEST' });
-
-  const { teamData } = getState().soccerData;
-
-  if (teamData[leagueId] && teamData[leagueId].length > 0) {
-    dispatch({ type: 'TEAM_ALREADY_HERE' });
-    return;
-  }
-
   axios
     .get(url, {
       headers: { 'X-Auth-Token': SOCCER_API_KEY }
@@ -59,8 +92,7 @@ export const getTeams = (url, leagueId) => (dispatch, getState) => {
     .then(res => {
       return dispatch({
         type: 'GET_TEAMS_SUCCESS',
-        payload: res.data.teams,
-        leagueId
+        payload: res.data.teams
       });
     })
     .catch(err => dispatch({ type: 'GET_TEAMS_ERROR', payload: err }));
@@ -90,27 +122,22 @@ const getFinishedMatches = data => {
 
 export const getHighlightVids = match => dispatch => {
   dispatch({ type: 'GET_HIGHLIGHTS_REQUEST' });
-  axios.get('https://www.googleapis.com/youtube/v3/search', {
-    params: {
-      q: match,
-      key: YOUTUBE_API_KEY,
-      part: 'snippet',
-      maxResults: 4
-    }
-  })
-  .then(res => {
-    return dispatch({type: 'GET_HIGHLIGHTS_SUCCESS', payload: res.data.items})
-  })
-  .catch(err => {
-    return dispatch({type: 'GET_HIGHLIGHTS_ERROR', payload: err})
-  })
-};
-
-export const deleteReviewItem = (id) => dispatch => {
   axios
-    .delete(`/api/reviews/${id}`)
-    .then(res =>
-      dispatch({ type: 'DELETE_REVIEW_ITEM_SUCCESS', payload: res.data })
-    )
-    .catch(err => dispatch({ type: 'DELETE_REVIEW_ITEM_FAILURE', payload: err }));
+    .get('https://www.googleapis.com/youtube/v3/search', {
+      params: {
+        q: match,
+        key: YOUTUBE_API_KEY,
+        part: 'snippet',
+        maxResults: 4
+      }
+    })
+    .then(res => {
+      return dispatch({
+        type: 'GET_HIGHLIGHTS_SUCCESS',
+        payload: res.data.items
+      });
+    })
+    .catch(err => {
+      return dispatch({ type: 'GET_HIGHLIGHTS_ERROR', payload: err });
+    });
 };

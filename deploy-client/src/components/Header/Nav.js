@@ -18,21 +18,23 @@ class Nav extends Component {
 
   render() {
     return (
+      <nav>
       <ul className="nav">
-        <li>
-          <Link to={this.props.auth ? '/fixtures' : '/'} 
-          className="nav-item" 
-          >
-            <img className="logo" src={logo} alt="soccer silhouette"></img>
-          </Link>
-        </li>
-        <li>
+      <li>
           <Link to='/'className="nav-item">
             Home
           </Link>
         </li>
+        <li>
+          <Link to={this.props.auth ? '/fixtures' : '/'} 
+          className="nav-item" 
+          >
+          {this.props.auth ? 'Fixtures' : null}
+          </Link>
+        </li>
         {this.renderAuthStatus()}
       </ul>
+      </nav>
     );
   }
 }

@@ -4,9 +4,10 @@ const mongoose = require('mongoose');
 
 
 const userSchema = new mongoose.Schema({
-  googleId: String
+  googleId: String,
+  name: String
 });
 
-const User = mongoose.model('users', userSchema);
+const User = mongoose.model('user', userSchema);
 
 module.exports = User;

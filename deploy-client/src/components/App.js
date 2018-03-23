@@ -24,7 +24,7 @@ class App extends Component {
             <Header />
             <Route exact path="/" component={Banner} />
             {/* <Route exact path="/reviews" component={Reviews} /> */}
-            <Route exact path="/fixtures" component={Fixtures} />
+            <Route path="/fixtures" component={Fixtures} />
           </div>
         </BrowserRouter>
       </div>

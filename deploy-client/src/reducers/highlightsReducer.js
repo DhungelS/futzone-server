@@ -1,6 +1,7 @@
 const initialState = {
   highlightVidURL: [],
-  thumbnails: []
+  thumbnails: [],
+  highlightVids: []
 };
 
 export default function(state = initialState, action) {

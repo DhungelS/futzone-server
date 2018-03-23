@@ -2,241 +2,181 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-responsive-modal';
 
+import  ReviewsModal  from './ReviewsModal/ReviewsModal';
+import  HighlightsModal  from './HighlightsModal/HighlightsModal';
 import Matches from './Matches/Matches';
+import Leagues from './Leagues/Leagues';
 import Teams from './Teams/Teams';
 import Search from './Search/Search';
-import Highlights from './Highlights/Highlights';
 import * as actions from '../../actions';
 import './Fixtures.css';
+import { generateMatchId } from '../../Utils/generateMatchId';
 
 export class Fixtures extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showTeams: false,
-      selectedLeague: '',
       openReviewModal: false,
-      openSecondModal: false,
-      moment: '',
+      openHighlightsModal: false,
+      selectedMatch: null,
+      review: '',
       rating: 1,
-      term: '',
-      searchs: []
+      searchTerm: '',
     };
   }
 
-  onOpenReviewModal = () => {
-    this.setState({ openReviewModal: true });
-    this.props.fetchReviewData();
+  componentDidMount() {
+    this.props.getLeagues();
+  }
+
+  onOpenReviewModal = match => {
+    this.props.fetchReviewData(match);
+    this.setState({ openReviewModal: true, selectedMatch: match });
   };
 
   onCloseReviewModal = () => {
     this.setState({ openReviewModal: false });
   };
 
-  onOpenSecondModal = highlightVids => {
-    this.setState({ openSecondModal: true });
-    this.props.getHighlightVids(highlightVids);
+  onOpenHighlightsModal = match => {
+    console.log(match)
+    this.props.getHighlightVids(match);
+    this.setState({ openHighlightsModal: true});
   };
 
-  onCloseSecondModal = () => {
-    this.setState({ openSecondModal: false });
+  onCloseHighlightsModal = () => {
+    this.setState({ openHighlightsModal: false });
   };
 
-  componentDidMount() {
-    this.props.getLeagues();
-  }
-  handleLeagueSelect(link, id) {
-    console.log(link);
+  handleLeagueSelect = link => {
     this.setState(
       {
-        showTeams: true,
-        selectedLeague: id
+        showTeams: true
       },
       () => {
-        this.props.getTeams(link, id);
+        this.props.getTeams(link);
       }
     );
-  }
+  };
 
   handleTeamSelect(link) {
     this.props.getMatches(link);
   }
 
-  reviewPostHandler = (event, match) => {
+  reviewPostHandler = event => {
     event.preventDefault();
+    if (!this.state.selectedMatch) {
+      return;
+    }
+
     this.props.postReviewData({
-      match,
-      moment: this.state.moment,
+      match: this.state.selectedMatch,
+      moment: this.state.review,
       rating: this.state.rating
     });
-  };
-
-  reviewDeleteHandler(id) {
-    this.props.deleteReviewItem(id);
-    this.props.fetchReviewData();
-  }
-
-  _searchFilterAndMapLeagueItems = (searchTerm, itemtoFilter) => {
-    const searchs = itemtoFilter
-      .map((league, index) => {
-        const modifiedLink = league._links.teams.href.substr(0, 4) + "s" +league._links.teams.href.substr(4);
-
-         return (<li
-          key={league.id}
-          onClick={() =>
-            this.handleLeagueSelect(modifiedLink, league.id)
-          }
-          className="league"
-        >
-          <a className="league-caption">{league.caption}</a>
-        </li>)
-      })
-      .filter(league =>
-        league.props.children.props.children.toUpperCase().includes(searchTerm.toUpperCase())
-      );
 
     this.setState({
-      term: searchTerm,
-      searchs
+      review: '',
+      rating: 1
     });
   };
 
-  render() {
-    const reviews = this.props.reviews.map((review, index) => {
-      return (
-        <li className="review-item" key={review._id}>
-          Match: <h4>{review.match}</h4> Rating: <h3>{review.rating}</h3> Review: {review.moment}
-          <div onClick={() => this.reviewDeleteHandler(review._id)}>
-            <i className="fa fa-trash-o fa-fw" />
-          </div>
-        </li>
-      );
-    });
+  reviewDeleteHandler(delId) {
+    this.props.deleteReviewItem(delId);
+  }
 
+  render() {
     return (
-      <div className="fixtures">
+      <main className="fixtures" role="main">
         <Search
-          searchAndFilter={e =>
-            this._searchFilterAndMapLeagueItems(
-              e.target.value,
-              this.props.leagues
-            )
+          searchAndFilter={event =>
+            this.setState({
+              searchTerm: event.target.value
+            })
           }
-          value={this.state.term}
+          value={this.state.searchTerm}
         />
         <div className="list">
-          <ul className="leagues-list">{this.state.searchs}</ul>
+          <ul className="leagues-list">
+            {this.props.leagues
+              .map((league, index) => (
+                <Leagues
+                  key={index}
+                  league={league}
+                  handleLeagueSelect={this.handleLeagueSelect}
+                />
+              ))
+              .filter(league =>
+                league.props.league.caption
+                  .toUpperCase()
+                  .includes(this.state.searchTerm.toUpperCase())
+              )}
+            {this.state.searchs}
+          </ul>
 
           <ul className="match-list">
-            {this.props.matches.map((match, index) => (
-              <div key={index}>
+            {this.props.matches
+              .map((match, index) => (
                 <Matches
                   key={index}
                   match={match}
                   onOpenReviewModal={this.onOpenReviewModal}
-                  onOpenSecondModal={() =>
-                    this.onOpenSecondModal(` ${match.homeTeamName} vs ${
-                      match.awayTeamName
-                    }
-                  `)
-                  }
+                  onOpenHighlightsModal={ this.onOpenHighlightsModal}
                 />
-
-                <Modal
-                  classNames={{
-                    overlay: 'custom-overlay',
-                    modal: 'custom-modal'
-                  }}
-                  open={this.state.openReviewModal}
-                  onClose={this.onCloseReviewModal}
-                  little
-                >
-                  <div>
-                    <h1 className="reviews-heading">Reviews</h1>
-                    <form
-                      className="review-form"
-                      onSubmit={e =>
-                        this.reviewPostHandler(
-                          e,
-                          ` ${match.homeTeamName} VS. ${match.awayTeamName}`
-                        )
-                      }
-                    >
-                      <textarea
-                        maxlength="125"
-                        value={this.state.moment}
-                        onChange={e =>
-                          this.setState({ moment: e.target.value })
-                        }
-                      />
-                      <select
-                        className="rating-select"
-                        value={this.state.rating}
-                        onChange={e =>
-                          this.setState({
-                            rating: e.target.value
-                          })
-                        }
-                        name="rating"
-                      >
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                      </select>
-                      <input className="form-submit-btn" type="submit" />
-                    </form>
-                    <ul className="review-list">{reviews}</ul>
-                  </div>
-                </Modal>
-
-                <Modal
-                  classNames={{
-                    overlay: 'custom-overlay',
-                    modal: 'custom-modal'
-                  }}
-                  open={this.state.openSecondModal}
-                  onClose={this.onCloseSecondModal}
-                  little
-                >
-                  <Highlights
-                    matchSelected={` ${match.homeTeamName} vs ${
-                      match.awayTeamName
-                    }`}
-                    This
-                    is
-                    the
-                    second
-                    modal
-                  />
-                </Modal>
-              </div>
-            ))}
+              ))
+              }
           </ul>
 
           <ul className="teams-list">
             {this.state.showTeams &&
-              this.props.teams[this.state.selectedLeague] &&
-              this.props.teams[this.state.selectedLeague].map((team, index) => (
+              this.props.teams.map((team, index) => (
                 <Teams
                   key={index}
                   team={team}
                   handleTeamSelect={link => this.handleTeamSelect(link)}
                 />
-              ))}
+              )).filter(
+                match => 
+                match.props.team.name
+                  .toUpperCase()
+                  .includes(this.state.searchTerm.toUpperCase())
+              )}
           </ul>
         </div>
-      </div>
+
+        <ReviewsModal
+          selectedMatch={this.state.selectedMatch}
+          openReviewModal={this.state.openReviewModal}
+          onCloseReviewModal={this.onCloseReviewModal}
+          review={this.state.review}
+          setReviewValue={e => this.setState({ review: e.target.value })}
+          reviewPostHandler={e => this.reviewPostHandler(e)}
+          rating={this.state.rating}
+          setRatingValue={e => this.setState({ rating: e.target.value })}
+          reviewsResponse={this.props.reviews}
+          authResponse={this.props.auth}
+          reviewDeleteHandler={key => this.reviewDeleteHandler(key)}
+        />
+
+        <HighlightsModal
+        selectedMatch={this.state.selectedMatch}
+        openHighlightsModal={this.state.openHighlightsModal}
+        onCloseHighlightsModal={this.onCloseHighlightsModal}
+        highlightsVids = {this.props.highlights}
+        />
+
+      </main>
     );
   }
 }
-
 const mapStateToProps = state => ({
   leagues: state.soccerData.leagueData,
   teams: state.soccerData.teamData,
   matches: state.soccerData.matchData,
-  reviews: state.review.reviewData
+  reviews: state.review.reviewData,
+  highlights: state.highlights.highlightVids,
+  auth: state.auth.userData
 });
 
 export default connect(mapStateToProps, actions)(Fixtures);
