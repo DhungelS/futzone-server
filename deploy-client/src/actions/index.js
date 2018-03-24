@@ -21,6 +21,20 @@ export const fetchReviewData = id => dispatch => {
     );
 };
 
+export const fetchAllReviewData = () => dispatch => {
+  axios
+    .get('/api/reviews/')
+    .then(res =>
+      dispatch({
+        type: 'FETCH_ALL_REVIEW_DATA_SUCCESS',
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({ type: 'FETCH_ALL_REVIEW_DATA_FAILURE', palyoad: err })
+    )
+}
+
 export const postReviewData = values => (dispatch, getState) => {
   const user = getState().auth.userData;
   axios
@@ -83,7 +97,7 @@ export const getLeagues = () => dispatch => {
     .catch(err => dispatch({ type: 'GET_LEAGUES_ERROR', payload: err }));
 };
 
-export const getTeams = (url) => (dispatch) => {
+export const getTeams = url => dispatch => {
   dispatch({ type: 'GET_TEAMS_REQUEST' });
   axios
     .get(url, {

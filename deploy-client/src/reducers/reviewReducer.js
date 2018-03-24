@@ -4,7 +4,6 @@ const initialState = {
 }
 
 export default function(state = initialState, action) {
-  console.log(action)
   switch (action.type) {
     case 'FETCH_REVIEW_DATA_SUCCESS':
       return {
@@ -13,6 +12,16 @@ export default function(state = initialState, action) {
       }
     case 'FETCH_REVIEW_DATA_FAILURE':
       return {
+        ...state,
+        err: action.payload
+      }
+      case 'FETCH_ALL_REVIEW_DATA_SUCCESS':
+      return {
+        ...state,
+        reviewData: action.payload
+      }
+      case 'FETCH_ALL_REVIEW_DATA_FAILURE':
+      return{
         ...state,
         err: action.payload
       }

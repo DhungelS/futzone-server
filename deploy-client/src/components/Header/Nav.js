@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Nav.css';
-import logo from '../../images/logo.svg';
 import {Link} from 'react-router-dom';
 
 class Nav extends Component {
@@ -32,6 +31,11 @@ class Nav extends Component {
           {this.props.auth ? 'Fixtures' : null}
           </Link>
         </li>
+        <li>
+        <Link to='/reviews'className="nav-item">
+            Reviews
+          </Link>
+          </li>
         {this.renderAuthStatus()}
       </ul>
       </nav>

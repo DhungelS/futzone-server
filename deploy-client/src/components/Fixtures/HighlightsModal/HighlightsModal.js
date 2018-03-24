@@ -3,7 +3,6 @@ import Highlights from '../Highlights/Highlights';
 import Modal from 'react-responsive-modal';
 
 export default function HighlightsModal(props) {
-  console.log("props", props)
   return (
     <Modal
       classNames={{

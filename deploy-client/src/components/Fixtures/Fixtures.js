@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Modal from 'react-responsive-modal';
+
 
 import  ReviewsModal  from './ReviewsModal/ReviewsModal';
 import  HighlightsModal  from './HighlightsModal/HighlightsModal';
@@ -10,7 +10,7 @@ import Teams from './Teams/Teams';
 import Search from './Search/Search';
 import * as actions from '../../actions';
 import './Fixtures.css';
-import { generateMatchId } from '../../Utils/generateMatchId';
+
 
 export class Fixtures extends Component {
   constructor(props) {
@@ -136,12 +136,7 @@ export class Fixtures extends Component {
                   team={team}
                   handleTeamSelect={link => this.handleTeamSelect(link)}
                 />
-              )).filter(
-                match => 
-                match.props.team.name
-                  .toUpperCase()
-                  .includes(this.state.searchTerm.toUpperCase())
-              )}
+              ))}
           </ul>
         </div>
 

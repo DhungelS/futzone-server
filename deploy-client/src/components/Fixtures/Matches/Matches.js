@@ -1,17 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
-import '../Fixtures.css';
-import {generateMatchId} from '../../../Utils/generateMatchId'
+import { bounceInUp } from 'react-animations';
+import Radium, {StyleRoot} from 'radium';
 
+import '../Fixtures.css';
 import * as actions from '../../../actions';
 
-
+const styles = {
+  bounceInUp: {
+    animation: 'x 1s',
+    animationName: Radium.keyframes(bounceInUp, 'bounceInUp')
+  }
+}
 
 export function Matches(props) {
-console.log(props.match)
+
   return (
-    <li key={props.key}className="match">
+    <StyleRoot>
+    <li key={props.key}className="match" style={styles.bounceInUp}>
       <b className="match-item">
         {props.match.homeTeamName} <span className="versus">VS.</span>{props.match.awayTeamName}
       </b>
@@ -34,6 +41,7 @@ console.log(props.match)
         Highlights
       </button>
     </li>
+    </StyleRoot>
   );
 }
 

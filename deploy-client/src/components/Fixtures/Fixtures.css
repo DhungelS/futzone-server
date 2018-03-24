@@ -164,7 +164,8 @@ text-align: center;
 }
 .match {
   padding: 10px;
-  border-radius: 50px 20px;
+  border-radius: 20px;
+  border: 2px solid blue;
 }
 
 .match-item {
