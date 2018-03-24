@@ -6,7 +6,9 @@ const mongoose = require('mongoose');
 const Review = require('../models/Review');
 
 router.get('/api/reviews', (req, res) => {
-  Review.find().populate('_user').then(results => {
+  const {id} = req.user;
+
+  Review.find({_user: id}).populate('_user').then(results => {
     res.json(results);
   });
 });
@@ -14,9 +16,9 @@ router.get('/api/reviews', (req, res) => {
 router.get('/api/reviews/:matchId', (req, res, next) => {
   const { matchId } = req.params;
 
-  // if (!req.user) {
-  //   return res.status(401).send({ error: 'You must sign in first.' });
-  // }
+  if (!req.user) {
+    return res.status(401).send({ error: 'You must sign in first.' });
+  }
 
   Review.find({ match: matchId })
     .select('rating moment match _user')
@@ -86,9 +88,9 @@ router.post('/api/reviews', (req, res, next) => {
 });
 
 router.delete('/api/reviews/:id', (req, res, next) => {
-  // if (!req.user) {
-  //   return res.status(401).send({ error: 'You must sign in first.' });
-  // }
+  if (!req.user) {
+    return res.status(401).send({ error: 'You must sign in first.' });
+  }
   const { id } = req.params;
   Review.findOneAndRemove({_id: id, _user: req.user.id})
     .then(count => {
