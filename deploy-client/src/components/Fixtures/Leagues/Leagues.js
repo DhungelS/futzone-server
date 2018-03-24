@@ -10,6 +10,7 @@ const styles = {
 }
 
 export default function Leagues(props) {
+  const modifiedLink = props.league._links.teams.href.substr(0, 4) + "s" +props.league._links.teams.href.substr(4);
   return (
     <StyleRoot>
     <li
