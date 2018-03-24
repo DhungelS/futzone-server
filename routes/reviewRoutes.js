@@ -88,9 +88,9 @@ router.post('/api/reviews', (req, res, next) => {
 });
 
 router.delete('/api/reviews/:id', (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).send({ error: 'You must sign in first.' });
-  }
+  // if (!req.user) {
+  //   return res.status(401).send({ error: 'You must sign in first.' });
+  // }
   const { id } = req.params;
   Review.findOneAndRemove({_id: id, _user: req.user.id})
     .then(count => {

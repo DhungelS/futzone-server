@@ -11,7 +11,6 @@ import Search from './Search/Search';
 import * as actions from '../../actions';
 import './Fixtures.css';
 
-
 export class Fixtures extends Component {
   constructor(props) {
     super(props);
@@ -80,7 +79,7 @@ export class Fixtures extends Component {
       review: '',
       rating: 1
     });
-  };
+  }
 
   reviewDeleteHandler(delId) {
     this.props.deleteReviewItem(delId);
@@ -128,6 +127,7 @@ export class Fixtures extends Component {
               }
           </ul>
 
+         
           <ul className="teams-list">
             {this.state.showTeams &&
               this.props.teams.map((team, index) => (
@@ -138,6 +138,7 @@ export class Fixtures extends Component {
                 />
               ))}
           </ul>
+         
         </div>
 
         <ReviewsModal

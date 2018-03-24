@@ -16,6 +16,7 @@ class Nav extends Component {
   }
 
   render() {
+    
     return (
       <nav>
       <ul className="nav">
@@ -27,13 +28,16 @@ class Nav extends Component {
         <li>
           <Link to={this.props.auth ? '/fixtures' : '/'} 
           className="nav-item" 
+          style={{display: this.props.auth ? 'block' : 'none' }}
           >
-          {this.props.auth ? 'Fixtures' : null}
+          Fixtures
           </Link>
         </li>
         <li>
-        <Link to='/reviews'className="nav-item">
-            Reviews
+        <Link to={this.props.auth ? '/reviews' : '/'} className="nav-item"
+         style={{display: this.props.auth ? 'block' : 'none' }}
+        >
+        Reviews
           </Link>
           </li>
         {this.renderAuthStatus()}
