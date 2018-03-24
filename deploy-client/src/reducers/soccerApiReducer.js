@@ -22,7 +22,7 @@ export default function(state = initialState, action) {
       matchData: action.payload
     }
     default: {
-        return state
+         return state
     }
   }
 }
