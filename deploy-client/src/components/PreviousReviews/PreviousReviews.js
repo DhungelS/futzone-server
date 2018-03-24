@@ -17,8 +17,8 @@ export class PreviousReviews extends Component {
     return (
       <div className="reviews-container">
         <h1>Your Previous Reviews</h1>
-        {this.props.reviews.map(review => 
-        <div className="review-item">
+        {this.props.reviews.map((review, index) => 
+        <div key={index} className="review-item">
         <h5 className="match-title">{review.match}</h5>
       <p className="match-rating">{review.rating}</p>
       <p className="match-review">{review.moment}</p>
