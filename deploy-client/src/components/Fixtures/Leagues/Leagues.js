@@ -16,7 +16,7 @@ export default function Leagues(props) {
     <li
       key={props.league.id}
       style={styles.bounceInLeft}
-      onClick={() => props.handleLeagueSelect(props.league._links.teams.href)}
+      onClick={() => props.handleLeagueSelect(modifiedLink)}
       className="league"
     >
       <a className="league-caption">{props.league.caption}</a>
