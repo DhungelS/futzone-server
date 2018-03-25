@@ -26,9 +26,8 @@ class Nav extends Component {
           </Link>
         </li>
         <li>
-          <Link to={this.props.auth ? '/fixtures' : '/'} 
+          <Link to= '/fixtures'  
           className="nav-item" 
-          style={{display: this.props.auth ? 'block' : 'none' }}
           >
           Fixtures
           </Link>

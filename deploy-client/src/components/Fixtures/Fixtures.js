@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { confirmAlert } from 'react-confirm-alert'; // 
+import 'react-confirm-alert/src/react-confirm-alert.css' 
 
 import  ReviewsModal  from './ReviewsModal/ReviewsModal';
 import  HighlightsModal  from './HighlightsModal/HighlightsModal';
@@ -30,9 +31,29 @@ export class Fixtures extends Component {
   }
 
   onOpenReviewModal = match => {
+
+    const reviewModal  = (_match) => {
     this.props.fetchReviewData(match);
-    this.setState({ openReviewModal: true, selectedMatch: match });
-  };
+    this.setState({ openReviewModal: true, selectedMatch: match })
+    }
+
+    const reviewAccess = () => {
+      confirmAlert({
+        title: 'Login',
+        message: 'You must login to access this feature.',
+        buttons: [
+          {
+            label: 'Ok'
+          },
+        ]
+      })
+    };
+
+    this.props.auth ? reviewModal(match) : reviewAccess()
+  }
+
+  
+
 
   onCloseReviewModal = () => {
     this.setState({ openReviewModal: false });
@@ -161,7 +182,7 @@ export class Fixtures extends Component {
         onCloseHighlightsModal={this.onCloseHighlightsModal}
         highlightsVids = {this.props.highlights}
         />
-
+              <button onClick={this.submit}>Confirm dialog</button>
       </main>
     );
   }

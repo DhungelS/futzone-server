@@ -18,6 +18,7 @@
     "radium": "^0.23.0",
     "react": "^16.2.0",
     "react-animations": "^1.0.0",
+    "react-confirm-alert": "^2.0.2",
     "react-dom": "^16.2.0",
     "react-moment": "^0.7.0",
     "react-redux": "^5.0.7",
