@@ -182,7 +182,7 @@ export class Fixtures extends Component {
         onCloseHighlightsModal={this.onCloseHighlightsModal}
         highlightsVids = {this.props.highlights}
         />
-              <button onClick={this.submit}>Confirm dialog</button>
+            
       </main>
     );
   }
