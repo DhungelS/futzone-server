@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { confirmAlert } from 'react-confirm-alert'; // 
+import 'react-confirm-alert/src/react-confirm-alert.css' 
 
 import  ReviewsModal  from './ReviewsModal/ReviewsModal';
 import  HighlightsModal  from './HighlightsModal/HighlightsModal';
@@ -10,7 +11,6 @@ import Teams from './Teams/Teams';
 import Search from './Search/Search';
 import * as actions from '../../actions';
 import './Fixtures.css';
-
 
 export class Fixtures extends Component {
   constructor(props) {
@@ -31,9 +31,29 @@ export class Fixtures extends Component {
   }
 
   onOpenReviewModal = match => {
+
+    const reviewModal  = (_match) => {
     this.props.fetchReviewData(match);
-    this.setState({ openReviewModal: true, selectedMatch: match });
-  };
+    this.setState({ openReviewModal: true, selectedMatch: match })
+    }
+
+    const reviewAccess = () => {
+      confirmAlert({
+        title: 'Login',
+        message: 'You must login to access this feature.',
+        buttons: [
+          {
+            label: 'Ok'
+          },
+        ]
+      })
+    };
+
+    this.props.auth ? reviewModal(match) : reviewAccess()
+  }
+
+  
+
 
   onCloseReviewModal = () => {
     this.setState({ openReviewModal: false });
@@ -80,7 +100,7 @@ export class Fixtures extends Component {
       review: '',
       rating: 1
     });
-  };
+  }
 
   reviewDeleteHandler(delId) {
     this.props.deleteReviewItem(delId);
@@ -128,6 +148,7 @@ export class Fixtures extends Component {
               }
           </ul>
 
+         
           <ul className="teams-list">
             {this.state.showTeams &&
               this.props.teams.map((team, index) => (
@@ -138,6 +159,7 @@ export class Fixtures extends Component {
                 />
               ))}
           </ul>
+         
         </div>
 
         <ReviewsModal
@@ -160,7 +182,7 @@ export class Fixtures extends Component {
         onCloseHighlightsModal={this.onCloseHighlightsModal}
         highlightsVids = {this.props.highlights}
         />
-
+            
       </main>
     );
   }

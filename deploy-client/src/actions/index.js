@@ -84,6 +84,15 @@ export const updateReviewItem = (id, values) => dispatch => {
     );
 };
 
+export const UpdateReviewItem = (id, values) => dispatch => {
+  axios
+  .put(`/api/reviews/${id}`, values)
+  .then(res => {
+    dispatch ({type: 'UPDATE_REVIEW_ITEM_SUCCESS', payload: res.data})
+  })
+  .catch(err => dispatch({type:'UPDATE_REVIEW_ITEM_FAILURE', payload: err}))
+}
+
 export const getLeagues = () => dispatch => {
   dispatch({ type: 'GET_LEAGUES_REQUEST' });
 

@@ -13,7 +13,6 @@ export default function HighlightsModal(props) {
       onClose={props.onCloseHighlightsModal}
       little
     >
-       <h1>Hello</h1>
       {props.highlightsVids.map((highlight, index) => (
    
       <Highlights 

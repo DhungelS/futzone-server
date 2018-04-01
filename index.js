@@ -22,7 +22,7 @@ app.use(
   cors({
     origin: CLIENT_ORIGIN,
     credentials: true,
-  }),
+  })
 );
 
 app.use(morgan('dev'));
@@ -31,7 +31,7 @@ app.use(
   cookieSession({
     maxAge: 15 * 24 * 60 * 60 * 1000,
     keys: [keys.cookieKey],
-  }),
+  })
 );
 
 app.use(passport.initialize());
@@ -44,7 +44,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('deploy-client/build'));
   const path = require('path');
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'deploy-client', 'build', 'index'));
+    res.sendFile(path.resolve(__dirname, 'deploy-client', 'build', 'index.html'));
   });
 }
 
