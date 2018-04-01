@@ -3,7 +3,8 @@
 const mongoose = require('mongoose');
 
 
-const reviewSchema = new mongoose.Schema ({
+const ReviewSchema = new mongoose.Schema ({
+  matchId: {type: String},
   match: {type: String},
   rating: {type: Number, required: true},
   moment: {type: String},
@@ -11,6 +12,6 @@ const reviewSchema = new mongoose.Schema ({
 });
 
 
-const Review = mongoose.model('Review', reviewSchema);
+const Review = mongoose.model('Review', ReviewSchema);
 
 module.exports = Review;

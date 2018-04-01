@@ -20,23 +20,23 @@ router.get('/api/reviews/:matchId', (req, res, next) => {
     return res.status(401).send({ error: 'You must sign in first.' });
   }
 
-  Review.find({ match: matchId })
-    .select('rating moment match _user')
+  Review.find({ matchId: matchId })
+    .select('rating moment matchId match _user')
     .populate('_user')
     .then(results => {
       res.json(results);
     });
 });
 
-router.put('/api/reviews/:matchId', (req, res, next) => {
+router.put('/api/reviews/:id', (req, res, next) => {
  
-  const { matchId } = req.params;
+  const { id } = req.params;
   const { rating, moment } = req.body;
 
   const updateObj = { rating, moment };
-  const options = { new: true };
+  const options = { new: true, upsert: true };
 
-  Review.findOneAndUpdate({ match: matchId }, updateObj, options)
+  Review.findByIdAndUpdate(id, updateObj, options)
     .select('rating moment match _id')
     .populate('_user')
     .then(result => {
@@ -52,10 +52,9 @@ router.post('/api/reviews', (req, res, next) => {
     return res.status(401).send({ error: 'You must sign in first.' });
   }
 
-  const { name, id } = req.user;
 
-  const { match, rating, moment } = req.body;
-  const reviewItem = { match, rating, moment, _user: req.user.id};
+  const {matchId, match, rating, moment } = req.body;
+  const reviewItem = { matchId, match, rating, moment, _user: req.user.id};
 
   if (!match) {
     const err = new Error('Missing `rating` in request body');
@@ -63,7 +62,7 @@ router.post('/api/reviews', (req, res, next) => {
     return next(err);
   }
 
-  Review.find({ match: match, _user: req.user.id })
+  Review.find({ matchId: matchId, _user: req.user.id })
     .count()
     .exec()
     .then(count => {
