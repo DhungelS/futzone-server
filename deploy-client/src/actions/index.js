@@ -1,5 +1,3 @@
-export {localSignUp, localLoginIn} from './localAuth';
-
 export {getHighlightVids} from './higlights';
 
 export {fetchGoogleUser} from './googleAuth';

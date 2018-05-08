@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import {clearAuthToken} from '../../Utils/authStorage'
 import './Nav.css';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
+
 
 class Nav extends Component {
   renderAuthStatus() {
@@ -51,17 +50,7 @@ class Nav extends Component {
             >
               Reviews
             </Link>
-            </li>
-            <li>
-            <Link to="/signup" className="nav-item">
-              Register
-            </Link>
-            </li>
-            <li>
-            <Link to="/login" className="nav-item">
-              Login
-            </Link>
-            </li>
+          </li>
           {this.renderAuthStatus()}
         </ul>
       </nav>
