@@ -4,15 +4,10 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
-const localStrategy = require('./passport/local');
-const jwtStrategy = require('./passport/jwt');
-
 
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const authRoutes = require('./routes/authRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
-const userRoutes = require('./routes/userRoutes');
-const localAuthRoutes = require('./routes/localAuthRoutes');
 const keys = require('./config/keys');
 const morgan = require('morgan');
 require('./models/User');
@@ -40,16 +35,11 @@ app.use(
   })
 );
 
-// passport.use(localStrategy);
-// passport.use(jwtStrategy);
+
+
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use(userRoutes);
-app.use(localAuthRoutes);
-
-// app.use(passport.authenticate('jwt', { session: false, failWithError: true }));
 
 app.use(authRoutes);
 app.use(reviewRoutes);
