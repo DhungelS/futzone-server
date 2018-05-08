@@ -28,7 +28,7 @@ export function Matches(props) {
       </p>
       <button
         className="modal-btn"
-        onClick={() => props.onOpenReviewModal(`${props.match.homeTeamName}-${props.match.awayTeamName}${props.match.date}`)}
+        onClick={() => props.onOpenReviewModal(`${props.match.homeTeamName} VS. ${props.match.awayTeamName}`,`${props.match.homeTeamName}-${props.match.awayTeamName}${props.match.date}`)}
       >
         Reviews
       </button>

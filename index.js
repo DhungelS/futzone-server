@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const authRoutes = require('./routes/authRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
@@ -33,6 +34,9 @@ app.use(
     keys: [keys.cookieKey],
   })
 );
+
+
+
 
 app.use(passport.initialize());
 app.use(passport.session());

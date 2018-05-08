@@ -1,25 +1,35 @@
 
+import {
+  FETCH_GOOGLE_USER_REQUEST,
+  FETCH_GOOGLE_USER_SUCCESS,
+  FETCH_GOOGLE_USER_ERROR
+} from '../actions/actionTypes';
 
 const initialState = {
   userData: null,
-  err: false
+  err: null,
+  loading: false
 }
 
 
 export default function(state = initialState, action) {
 
   switch (action.type) {
-    case 'FETCH_USER_SUCCESS':
+    case FETCH_GOOGLE_USER_REQUEST:
+    return {
+      ...state,
+      loading: true
+    }
+    case FETCH_GOOGLE_USER_SUCCESS:
       return {
         ...state,
         userData: action.payload || false
       }
-    case 'FETCH_USER_ERROR':
+    case FETCH_GOOGLE_USER_ERROR:
       return {
         ...state,
         err: action.payload
       }
-    
     default:
       return state;
   }

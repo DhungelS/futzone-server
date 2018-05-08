@@ -19,6 +19,7 @@ export class Fixtures extends Component {
       showTeams: false,
       openReviewModal: false,
       openHighlightsModal: false,
+      matchId: null,
       selectedMatch: null,
       review: '',
       rating: 1,
@@ -30,11 +31,11 @@ export class Fixtures extends Component {
     this.props.getLeagues();
   }
 
-  onOpenReviewModal = match => {
+  onOpenReviewModal = (selectedMatch, matchId) => {
 
-    const reviewModal  = (_match) => {
-    this.props.fetchReviewData(match);
-    this.setState({ openReviewModal: true, selectedMatch: match })
+    const reviewModal  = (selectedMatch, matchId) => {
+    this.props.fetchReviewData(matchId);
+    this.setState({ openReviewModal: true, selectedMatch, matchId })
     }
 
     const reviewAccess = () => {
@@ -49,7 +50,7 @@ export class Fixtures extends Component {
       })
     };
 
-    this.props.auth ? reviewModal(match) : reviewAccess()
+    this.props.auth ? reviewModal(selectedMatch, matchId) : reviewAccess()
   }
 
   
@@ -60,7 +61,7 @@ export class Fixtures extends Component {
   };
 
   onOpenHighlightsModal = match => {
-    console.log(match)
+   
     this.props.getHighlightVids(match);
     this.setState({ openHighlightsModal: true});
   };
@@ -93,9 +94,11 @@ export class Fixtures extends Component {
     this.props.postReviewData({
       match: this.state.selectedMatch,
       moment: this.state.review,
-      rating: this.state.rating
+      rating: this.state.rating,
+      matchId: this.state.matchId
     });
 
+    console.log(this.state.matchId);
     this.setState({
       review: '',
       rating: 1
@@ -167,13 +170,13 @@ export class Fixtures extends Component {
           openReviewModal={this.state.openReviewModal}
           onCloseReviewModal={this.onCloseReviewModal}
           review={this.state.review}
-          setReviewValue={e => this.setState({ review: e.target.value })}
+          setReviewValue={(e) => this.setState({ review: e.target.value })}
           reviewPostHandler={e => this.reviewPostHandler(e)}
           rating={this.state.rating}
-          setRatingValue={e => this.setState({ rating: e.target.value })}
+          setRatingValue={(e) => this.setState({ rating: e.target.value })}
           reviewsResponse={this.props.reviews}
           authResponse={this.props.auth}
-          reviewDeleteHandler={key => this.reviewDeleteHandler(key)}
+          reviewDeleteHandler={(key) => this.reviewDeleteHandler(key)}
         />
 
         <HighlightsModal

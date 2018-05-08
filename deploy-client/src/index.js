@@ -30,6 +30,14 @@ const store = createStore(
   enhancers
 );
 
+// const authToken = loadAuthToken()
+
+//   if(authToken){
+//     const token = authToken;
+//     store.dispatch()
+//   }
+
+
 ReactDOM.render(
   <Provider store={store}>
     <App />

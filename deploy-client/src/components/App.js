@@ -12,7 +12,7 @@ import PreviousReviews from './PreviousReviews/PreviousReviews'
 class App extends Component {
 
   componentDidMount(){
-    this.props.fetchUser();
+    this.props.fetchGoogleUser();
     }
 
   render() {
@@ -24,9 +24,8 @@ class App extends Component {
           <div>
             <Header />
             <Route exact path="/" component={Banner} />
-            {/* <Route exact path="/reviews" component={Reviews} /> */}
             <Route path="/fixtures" component={Fixtures} />
-            <Route path="/Reviews" component={PreviousReviews} />
+            <Route path="/reviews" component={PreviousReviews} />
           </div>
         </BrowserRouter>
       </div>
