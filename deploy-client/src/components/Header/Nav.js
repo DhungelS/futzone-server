@@ -1,34 +1,40 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './Nav.css';
-import {Link} from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
+import {clearAuth} from '../../actions/actionTypes';
+import {clearAuthToken} from '../../local-storage';
 
 class Nav extends Component {
-  renderAuthStatus() {
-    switch (this.props.auth) {
-      case null:
-        return;
-      case false:
+
+  logOut = () => {
+    this.props.dispatch(clearAuth());
+    clearAuthToken();
+}
+
+  renderAuthStatus = () => {
+    switch (this.props.loggedIn) {
+      case true:
         return (
           <li className="right">
-            <a className="nav-item active" href="/auth/google">
-              Login With Google
-            </a>
-          </li>
-        );
-      default:
-        return (
-          <li className="right">
-            <a className="nav-item active" href="api/logout">
+            <Link className="nav-item active" to="/" onClick={this.logOut}>
               Logout
-            </a>
+            </Link>
           </li>
-        );
+        )
+      default: 
+      return (
+        <li className="right">
+        <Link className="nav-item active" to="/register">
+          Get Started
+        </Link>
+      </li>
+      );
     }
   }
 
   render() {
+    
     return (
       <nav>
         <ul className="nav">
@@ -44,9 +50,9 @@ class Nav extends Component {
           </li>
           <li>
             <Link
-              to={this.props.auth ? '/reviews' : '/'}
+              to={this.props.loggedIn ? '/reviews' : '/'}
               className="nav-item"
-              style={{ display: this.props.auth ? 'block' : 'none' }}
+              style={{ display: this.props.loggedIn ? 'block' : 'none' }}
             >
               Reviews
             </Link>
@@ -58,8 +64,8 @@ class Nav extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return { auth: state.auth.userData };
-}
+const mapStateToProps = (state)  => ({
+  loggedIn : state.auth.currentUser !== null
+})
 
 export default connect(mapStateToProps)(Nav);

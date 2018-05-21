@@ -1,7 +1,3 @@
-export const FETCH_GOOGLE_USER_REQUEST = 'FETCH_GOOGLE_USER_REQUEST';
-export const FETCH_GOOGLE_USER_SUCCESS = 'FETCH_GOOGLE_USER_SUCCESS';
-export const FETCH_GOOGLE_USER_ERROR = 'FETCH_GOOGLE_USER_ERROR';
-
 export const GET_LEAGUES_REQUEST = 'GET_LEAGUES_REQUEST';
 export const GET_LEAGUES_SUCCESS = 'GET_LEAGUES_SUCCESS';
 export const GET_LEAGUES_ERROR = 'GET_LEAGUES_ERROR';
@@ -37,3 +33,31 @@ export const UPDATE_REVIEW_ITEM_ERROR = 'UPDATE_REVIEW_ITEM_ERROR'
 export const DELETE_REVIEW_ITEM_REQUEST='DELETE_REVIEW_ITEM_REQUEST';
 export const DELETE_REVIEW_ITEM_SUCCESS ='DELETE_REVIEW_ITEM_SUCCESS';
 export const DELETE_REVIEW_ITEM_ERROR ='DELETE_REVIEW_ITEM_ERROR';
+
+export const SET_AUTH_TOKEN = 'SET_AUTH_TOKEN';
+export const setAuthToken = authToken => ({
+    type: SET_AUTH_TOKEN,
+    authToken
+});
+
+export const CLEAR_AUTH = 'CLEAR_AUTH';
+export const clearAuth = () => ({
+    type: CLEAR_AUTH
+});
+
+export const AUTH_REQUEST = 'AUTH_REQUEST';
+export const authRequest = () => ({
+    type: AUTH_REQUEST
+});
+
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const authSuccess = currentUser => ({
+    type: AUTH_SUCCESS,
+    currentUser
+});
+
+export const AUTH_ERROR = 'AUTH_ERROR';
+export const authError = error => ({
+    type: AUTH_ERROR,
+    error
+});

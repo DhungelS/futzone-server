@@ -4,7 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
-
+const jwtStrategy = require('./passport/jwt');
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const authRoutes = require('./routes/authRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
@@ -28,21 +28,31 @@ app.use(
 
 app.use(morgan('dev'));
 
-app.use(
-  cookieSession({
-    maxAge: 15 * 24 * 60 * 60 * 1000,
-    keys: [keys.cookieKey],
-  })
-);
+const signupRoute = require('./routes/signupRoutes');
+app.use('/signup', signupRoute);
+
+const localLoginRoute = require('./routes/localLoginRoutes');
+app.use('/login', localLoginRoute);
+
+app.use(passport.authenticate('jwt', { session: false, failWithError: true }));
+
+// app.use(
+//   cookieSession({
+//     maxAge: 15 * 24 * 60 * 60 * 1000,
+//     keys: [keys.cookieKey],
+//   })
+// );
 
 
 
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-app.use(authRoutes);
+// app.use(authRoutes);
 app.use(reviewRoutes);
+
+
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('deploy-client/build'));
