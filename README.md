@@ -11,7 +11,7 @@ on matches depending on the quality of the match.
 ![Alt text](https://i.imgur.com/6c2oB3o.jpg)
 
 ## Live-demo
-https://futzone.herokuapp.com/
+https://futzone.netlify.com/
 
 
 
