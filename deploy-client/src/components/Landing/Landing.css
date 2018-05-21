@@ -39,3 +39,24 @@ background-color: #6A5CC2;
 font-size: 25px;
 color: white;
 }
+
+.info-landing {
+  background-color: #6A5CC2;
+  text-align: center;
+  color: white;
+  padding-top: 25px;
+}
+
+.info-landing h1 {
+  font-size: 50px;
+}
+
+.info-landing p {
+  font-size: 35px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.step {
+ border: 10px  solid black;
+}

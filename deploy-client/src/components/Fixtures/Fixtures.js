@@ -196,7 +196,7 @@ const mapStateToProps = state => ({
   matches: state.soccerData.matchData,
   reviews: state.review.reviewData,
   highlights: state.highlights.highlightVids,
-  auth: state.auth.userData
+  auth: state.auth.currentUser
 });
 
 export default connect(mapStateToProps, actions)(Fixtures);

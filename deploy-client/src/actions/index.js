@@ -1,6 +1,6 @@
 export {getHighlightVids} from './higlights';
 
-export {fetchGoogleUser} from './googleAuth';
+export {registerUser, login, refreshAuthToken} from './auth';
 
 export {getLeagues, getTeams, getMatches} from './soccerApi';
 

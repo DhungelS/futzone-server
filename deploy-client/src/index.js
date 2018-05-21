@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-
-
 import './index.css';
 import App from './components/App';
 import reducers from './reducers';
@@ -30,12 +28,6 @@ const store = createStore(
   enhancers
 );
 
-// const authToken = loadAuthToken()
-
-//   if(authToken){
-//     const token = authToken;
-//     store.dispatch()
-//   }
 
 
 ReactDOM.render(
