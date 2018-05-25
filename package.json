@@ -1,0 +1,36 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "antd": "^3.5.3",
+    "axios": "^0.18.0",
+    "jwt-decode": "^2.2.0",
+    "moment": "^2.21.0",
+    "moment-timezone": "^0.5.14",
+    "morgan": "^1.9.0",
+    "radium": "^0.23.0",
+    "react": "^16.2.0",
+    "react-animations": "^1.0.0",
+    "react-confirm-alert": "^2.0.2",
+    "react-dom": "^16.2.0",
+    "react-moment": "^0.7.0",
+    "react-redux": "^5.0.7",
+    "react-responsive-modal": "^2.0.1",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.1",
+    "react-virtual-list": "^2.3.0",
+    "react-virtualized": "^9.19.1",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "redux-logger": "^3.0.6"
+  }
+}

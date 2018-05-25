@@ -1,0 +1,39 @@
+.reviews-container{
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 15px;
+  max-width: 95%;
+}
+.tbl-header-row th{
+text-align: center;
+background-color: #6A5BC7;
+padding-top: 12px;
+padding-bottom: 12px;
+color: white;
+}
+.review-tbl{
+  text-align: center;
+  margin: 0 auto;
+  border: 3px solid green;
+  border-collapse: collapse;
+  color: green;
+  font-size: 25px;
+}
+
+.tbl-info-row td, .tbl-header-row th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.tbl-info-row:hover {
+  background: linear-gradient(to bottom, #e52d27, #b31217); 
+   cursor: pointer;
+}
+
+.custom-modal-reviews {
+  border: 5px solid green;
+}
+
+.review-form textarea {
+  width: 510px;
+}
