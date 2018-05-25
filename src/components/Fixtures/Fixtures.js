@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { confirmAlert } from 'react-confirm-alert'; // 
-import 'react-confirm-alert/src/react-confirm-alert.css' 
+import { confirmAlert } from 'react-confirm-alert'; //
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import { List, Card } from 'antd';
 
-import  ReviewsModal  from './ReviewsModal/ReviewsModal';
-import  HighlightsModal  from './HighlightsModal/HighlightsModal';
+import ReviewsModal from './ReviewsModal/ReviewsModal';
+import HighlightsModal from './HighlightsModal/HighlightsModal';
 import Matches from './Matches/Matches';
 import Leagues from './Leagues/Leagues';
 import Teams from './Teams/Teams';
 import Search from './Search/Search';
 import * as actions from '../../actions';
-import './Fixtures.css';
+// import './Fixtures.css';
 
 export class Fixtures extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ export class Fixtures extends Component {
       selectedMatch: null,
       review: '',
       rating: 1,
-      searchTerm: '',
+      searchTerm: ''
     };
   }
 
@@ -32,11 +33,10 @@ export class Fixtures extends Component {
   }
 
   onOpenReviewModal = (selectedMatch, matchId) => {
-
-    const reviewModal  = (selectedMatch, matchId) => {
-    this.props.fetchReviewData(matchId);
-    this.setState({ openReviewModal: true, selectedMatch, matchId })
-    }
+    const reviewModal = (selectedMatch, matchId) => {
+      this.props.fetchReviewData(matchId);
+      this.setState({ openReviewModal: true, selectedMatch, matchId });
+    };
 
     const reviewAccess = () => {
       confirmAlert({
@@ -45,25 +45,21 @@ export class Fixtures extends Component {
         buttons: [
           {
             label: 'Ok'
-          },
+          }
         ]
-      })
+      });
     };
 
-    this.props.auth ? reviewModal(selectedMatch, matchId) : reviewAccess()
-  }
-
-  
-
+    this.props.auth ? reviewModal(selectedMatch, matchId) : reviewAccess();
+  };
 
   onCloseReviewModal = () => {
     this.setState({ openReviewModal: false });
   };
 
   onOpenHighlightsModal = match => {
-   
     this.props.getHighlightVids(match);
-    this.setState({ openHighlightsModal: true});
+    this.setState({ openHighlightsModal: true });
   };
 
   onCloseHighlightsModal = () => {
@@ -102,7 +98,7 @@ export class Fixtures extends Component {
       review: '',
       rating: 1
     });
-  }
+  };
 
   reviewDeleteHandler(delId) {
     this.props.deleteReviewItem(delId);
@@ -120,7 +116,7 @@ export class Fixtures extends Component {
           value={this.state.searchTerm}
         />
         <div className="list">
-          <ul className="leagues-list">
+          {/* <ul className="leagues-list">
             {this.props.leagues
               .map((league, index) => (
                 <Leagues
@@ -135,22 +131,35 @@ export class Fixtures extends Component {
                   .includes(this.state.searchTerm.toUpperCase())
               )}
             {this.state.searchs}
-          </ul>
+          </ul> */}
+
+          <List
+            grid={{ gutter: 16, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 3 }}
+            className="leagues-list"
+            dataSource={this.props.leagues}
+            renderItem={(league, index) => (
+              <List.Item>
+                <Leagues
+                  key={index}
+                  identifer={index}
+                  league={league}
+                  handleLeagueSelect={this.handleLeagueSelect}
+                />
+              </List.Item>
+            )}
+          />
 
           <ul className="match-list">
-            {this.props.matches
-              .map((match, index) => (
-                <Matches
-                  key={index}
-                  match={match}
-                  onOpenReviewModal={this.onOpenReviewModal}
-                  onOpenHighlightsModal={ this.onOpenHighlightsModal}
-                />
-              ))
-              }
+            {this.props.matches.map((match, index) => (
+              <Matches
+                key={index}
+                match={match}
+                onOpenReviewModal={this.onOpenReviewModal}
+                onOpenHighlightsModal={this.onOpenHighlightsModal}
+              />
+            ))}
           </ul>
 
-         
           <ul className="teams-list">
             {this.state.showTeams &&
               this.props.teams.map((team, index) => (
@@ -161,7 +170,6 @@ export class Fixtures extends Component {
                 />
               ))}
           </ul>
-         
         </div>
 
         <ReviewsModal
@@ -169,22 +177,21 @@ export class Fixtures extends Component {
           openReviewModal={this.state.openReviewModal}
           onCloseReviewModal={this.onCloseReviewModal}
           review={this.state.review}
-          setReviewValue={(e) => this.setState({ review: e.target.value })}
+          setReviewValue={e => this.setState({ review: e.target.value })}
           reviewPostHandler={e => this.reviewPostHandler(e)}
           rating={this.state.rating}
-          setRatingValue={(e) => this.setState({ rating: e.target.value })}
+          setRatingValue={e => this.setState({ rating: e.target.value })}
           reviewsResponse={this.props.reviews}
           authResponse={this.props.auth}
-          reviewDeleteHandler={(key) => this.reviewDeleteHandler(key)}
+          reviewDeleteHandler={key => this.reviewDeleteHandler(key)}
         />
 
         <HighlightsModal
-        selectedMatch={this.state.selectedMatch}
-        openHighlightsModal={this.state.openHighlightsModal}
-        onCloseHighlightsModal={this.onCloseHighlightsModal}
-        highlightsVids = {this.props.highlights}
+          selectedMatch={this.state.selectedMatch}
+          openHighlightsModal={this.state.openHighlightsModal}
+          onCloseHighlightsModal={this.onCloseHighlightsModal}
+          highlightsVids={this.props.highlights}
         />
-            
       </main>
     );
   }

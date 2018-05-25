@@ -10,7 +10,9 @@
   margin-top: 50px;
 }
 
-
+.card {
+font-size: 45px;
+}
 
  .leagues-list,
 .teams-list,
@@ -68,7 +70,7 @@
   text-decoration: none;
   outline: none;
   color: #fff;
-  background-color: #4caf50;
+  background-color: black;
   border: none;
   border-radius: 15px;
   box-shadow: 0 9px #999;
