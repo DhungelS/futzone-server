@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { confirmAlert } from 'react-confirm-alert'; //
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { List, Spin} from 'antd';
-
+import { List, Spin, Steps } from 'antd';
 import ReviewsModal from './ReviewsModal/ReviewsModal';
 import HighlightsModal from './HighlightsModal/HighlightsModal';
 import Matches from './Matches/Matches';
@@ -12,6 +11,8 @@ import Teams from './Teams/Teams';
 import Search from './Search/Search';
 import * as actions from '../../actions';
 import './Fixtures.css';
+
+const Step = Steps.Step;
 
 export class Fixtures extends Component {
   constructor(props) {
@@ -24,7 +25,8 @@ export class Fixtures extends Component {
       selectedMatch: null,
       review: '',
       rating: 1,
-      searchTerm: ''
+      searchTerm: '',
+      currentStep: 0
     };
   }
 
@@ -67,17 +69,26 @@ export class Fixtures extends Component {
   };
 
   handleLeagueSelect = link => {
+
+    if(!this.props.teams.length){
+      this.setState({ currentStep: this.state.currentStep + 1})
+    }
+
     this.setState(
       {
-        showTeams: true
+        showTeams: true,
       },
       () => {
-        this.props.getTeams(link);
+        this.props.getTeams(link)
       }
     );
   };
 
   handleTeamSelect(link) {
+    
+    if(!this.props.matches.length){
+      this.setState({ currentStep: this.state.currentStep + 1})
+    }
     this.props.getMatches(link);
   }
 
@@ -113,6 +124,11 @@ export class Fixtures extends Component {
 
     return (
       <main className="fixtures" role="main">
+        <Steps className="steppers" size="large" current={this.state.currentStep}>
+          <Step title="League" />
+          <Step title="Team" />
+          <Step title="Matches" />
+        </Steps>
         <Search
           searchAndFilter={event =>
             this.setState({
@@ -139,22 +155,28 @@ export class Fixtures extends Component {
             {this.state.searchs}
           </ul> */}
 
-       <List
-            grid={{ gutter: 16, xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 1 }}
-            className="test-list"
-            locale={{emptyText: null}}
-            dataSource={filtered}
-            renderItem={(league, index) => (
-              <List.Item>
-                <Leagues
-                  key={index}
-                  identifer={index}
-                  league={league}
-                  handleLeagueSelect={this.handleLeagueSelect}
-                />
-              </List.Item>
-            )}
-          />
+          {this.props.leagues.length ? (
+            <List
+              grid={{ gutter: 16, xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 1 }}
+              className="test-list"
+              locale={{ emptyText: null }}
+              dataSource={filtered}
+              renderItem={(league, index) => (
+                <List.Item>
+                  <Leagues
+                    key={index}
+                    identifer={index}
+                    league={league}
+                    handleLeagueSelect={this.handleLeagueSelect}
+                  />
+                </List.Item>
+              )}
+            />
+          ) : (
+            <div className="centered-spinner">
+              <Spin />
+            </div>
+          )}
 
           {/* <ul className="test-list">
             {this.props.matches.map((match, index) => (
@@ -166,37 +188,45 @@ export class Fixtures extends Component {
               />
             ))}
           </ul> */}
-          {this.props.matches.length > 0 ?<List
-            grid={{ gutter: 16, xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 1 }}
-            dataSource={this.props.matches}
-            locale={{emptyText: null}}
-            className="test-list"
-            renderItem={(match, index) => (
-              <List.Item>
-               <Matches
-                key={index}
-                match={match}
-                onOpenReviewModal={this.onOpenReviewModal}
-                onOpenHighlightsModal={this.onOpenHighlightsModal}
-              />
-              </List.Item>
-            )}
-          />: <div className="empty"> </div>}
-            
-         {this.props.teams.length > 0 ? <List
-            grid={{ gutter: 16, xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 1 }}
-            dataSource={this.props.teams}
-            className="test-list"
-            renderItem={(team, index) => (
-              <List.Item>
-                <Teams
-                  key={index}
-                  team={team}
-                  handleTeamSelect={link => this.handleTeamSelect(link)}
-                />
-              </List.Item>
-            )}
-          />: <div className="empty"> </div>}
+          {this.props.matches.length ? (
+            <List
+              grid={{ gutter: 16, xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 1 }}
+              dataSource={this.props.matches}
+              locale={{ emptyText: null }}
+              className="test-list"
+              renderItem={(match, index) => (
+                <List.Item>
+                  <Matches
+                    key={index}
+                    match={match}
+                    onOpenReviewModal={this.onOpenReviewModal}
+                    onOpenHighlightsModal={this.onOpenHighlightsModal}
+                  />
+                </List.Item>
+              )}
+            />
+          ) : (
+            <div className="empty"> </div>
+          )}
+
+          {this.props.teams.length ? (
+            <List
+              grid={{ gutter: 16, xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 1 }}
+              dataSource={this.props.teams}
+              className="test-list"
+              renderItem={(team, index) => (
+                <List.Item>
+                  <Teams
+                    key={index}
+                    team={team}
+                    handleTeamSelect={link => this.handleTeamSelect(link)}
+                  />
+                </List.Item>
+              )}
+            />
+          ) : (
+            <div className="empty"> </div>
+          )}
 
           {/* <ul className="teams-list">
             {this.state.showTeams &&

@@ -1,9 +1,9 @@
-/* .fixtures {
+.fixtures {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-
-} */
+  max-width: 95%;
+}
 
 .test {
   display: flex;
@@ -15,6 +15,15 @@
 
 .team-card:hover{
   cursor: pointer;
+}
+
+.centered-spinner{
+  margin: 0 auto;
+}
+
+.steppers {
+ margin: 25px;
+padding: 25px;
 }
 
 .empty{display: none;}
