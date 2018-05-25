@@ -4,6 +4,10 @@ import Radium, {StyleRoot} from 'radium';
 import { Card } from 'antd';
 
 
+const alignStyle = {
+  textAlign: 'center'
+}
+
 
 export default function Leagues(props) {
   
@@ -16,11 +20,11 @@ export default function Leagues(props) {
     <StyleRoot>
     <Card
       key={props.league.id}
-      className='card'
+      className="test-league-item"
       onClick={() => props.handleLeagueSelect(modifiedLink)}
       hoverable={true}
       title={props.league.caption}
-      style={props.identifer % 2 !== 0 ? {backgroundColor: 'black'}: null} 
+      style={props.identifer % 2 !== 0 ? {...alignStyle, backgroundColor: 'black'}: {...alignStyle}} 
     >
     </Card>
      </StyleRoot>

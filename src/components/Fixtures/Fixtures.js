@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { confirmAlert } from 'react-confirm-alert'; //
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { List, Card } from 'antd';
+import { List, Spin} from 'antd';
 
 import ReviewsModal from './ReviewsModal/ReviewsModal';
 import HighlightsModal from './HighlightsModal/HighlightsModal';
@@ -11,7 +11,7 @@ import Leagues from './Leagues/Leagues';
 import Teams from './Teams/Teams';
 import Search from './Search/Search';
 import * as actions from '../../actions';
-// import './Fixtures.css';
+import './Fixtures.css';
 
 export class Fixtures extends Component {
   constructor(props) {
@@ -105,6 +105,12 @@ export class Fixtures extends Component {
   }
 
   render() {
+    let filtered = this.props.leagues.filter(league => {
+      return league.caption
+        .toUpperCase()
+        .includes(this.state.searchTerm.toUpperCase());
+    });
+
     return (
       <main className="fixtures" role="main">
         <Search
@@ -115,7 +121,7 @@ export class Fixtures extends Component {
           }
           value={this.state.searchTerm}
         />
-        <div className="list">
+        <div className="test">
           {/* <ul className="leagues-list">
             {this.props.leagues
               .map((league, index) => (
@@ -133,10 +139,11 @@ export class Fixtures extends Component {
             {this.state.searchs}
           </ul> */}
 
-          <List
-            grid={{ gutter: 16, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 3 }}
-            className="leagues-list"
-            dataSource={this.props.leagues}
+       <List
+            grid={{ gutter: 16, xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 1 }}
+            className="test-list"
+            locale={{emptyText: null}}
+            dataSource={filtered}
             renderItem={(league, index) => (
               <List.Item>
                 <Leagues
@@ -149,7 +156,7 @@ export class Fixtures extends Component {
             )}
           />
 
-          <ul className="match-list">
+          {/* <ul className="test-list">
             {this.props.matches.map((match, index) => (
               <Matches
                 key={index}
@@ -158,9 +165,40 @@ export class Fixtures extends Component {
                 onOpenHighlightsModal={this.onOpenHighlightsModal}
               />
             ))}
-          </ul>
+          </ul> */}
+          {this.props.matches.length > 0 ?<List
+            grid={{ gutter: 16, xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 1 }}
+            dataSource={this.props.matches}
+            locale={{emptyText: null}}
+            className="test-list"
+            renderItem={(match, index) => (
+              <List.Item>
+               <Matches
+                key={index}
+                match={match}
+                onOpenReviewModal={this.onOpenReviewModal}
+                onOpenHighlightsModal={this.onOpenHighlightsModal}
+              />
+              </List.Item>
+            )}
+          />: <div className="empty"> </div>}
+            
+         {this.props.teams.length > 0 ? <List
+            grid={{ gutter: 16, xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 1 }}
+            dataSource={this.props.teams}
+            className="test-list"
+            renderItem={(team, index) => (
+              <List.Item>
+                <Teams
+                  key={index}
+                  team={team}
+                  handleTeamSelect={link => this.handleTeamSelect(link)}
+                />
+              </List.Item>
+            )}
+          />: <div className="empty"> </div>}
 
-          <ul className="teams-list">
+          {/* <ul className="teams-list">
             {this.state.showTeams &&
               this.props.teams.map((team, index) => (
                 <Teams
@@ -169,7 +207,7 @@ export class Fixtures extends Component {
                   handleTeamSelect={link => this.handleTeamSelect(link)}
                 />
               ))}
-          </ul>
+          </ul> */}
         </div>
 
         <ReviewsModal
