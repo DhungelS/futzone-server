@@ -3,7 +3,11 @@ import { registerUser } from '../../actions/';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Form, Icon, Input, Button} from 'antd';
 import './register.css';
+const FormItem = Form.Item;
+
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -42,25 +46,25 @@ class Register extends Component {
       <div className="register">
         <form className="register-form" onSubmit={this.registerHandler}>
           <h1>Register</h1>
-          <label htmlFor="username-input">Username: </label>
-          <input
-            type="text"
-            id="username-input"
-            name="username"
+          <FormItem>
+          <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+             value={this.state.username}
             onChange={this.handleUserNameInput}
             required
           />
-          <br />
-          <label htmlFor="pass-input">Password: </label>
-          <input
+             </FormItem>
+
+          	<FormItem>
+          <Input
+          	prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
             type="password"
             id="pass-input"
-            name="password"
+            value={this.state.pass}
             onChange={this.handlePassInput}
             required
           />
-          <br/>
-          <button type="submit">Sign Up</button>
+          	</FormItem>
+          <Button htmlType="submit">Sign Up</Button>
         </form>
         <div className="prev-acc">
         <h2>Already have an account?</h2>

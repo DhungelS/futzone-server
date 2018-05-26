@@ -3,6 +3,7 @@
   min-height: 100vh;
   flex-direction: column;
   max-width: 95%;
+  margin: 0 auto;
 }
 
 .test {
@@ -161,7 +162,7 @@ font-size: 45px;
   background: rgba(36, 123, 160, 0.7) !important;
 }
 .custom-modal {
-  background: #b2dbbf !important;
+  background: white !important;
   max-width: 1000px !important;
   height: 95%;
   width: 100%;
@@ -186,8 +187,8 @@ text-align: center;
 
 .review-item {
   display: inline-block;
-  width: 25%;
-  background-color: #6a5acd;
+  width: 100%;
+  background-color: black;
   color: white;
   margin: 5px;
   font-size: 15px;
@@ -196,13 +197,17 @@ text-align: center;
   overflow: hidden;
   padding: 5px;
   border-radius: 10px;
+  font-size: 25px;
+  padding-right: 15px;
+  margin: 0 auto;
+  margin-top: 15px;
 }
 
 
 .review-item h3, .review-item h4, .review-item p{
   color: red;
   margin: 5px;
-  font-size: 20px;
+  font-size: 30px;
 }
 .match {
   padding: 10px;

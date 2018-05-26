@@ -35,16 +35,17 @@ background-color: #6A5BC7;
 }
 
 .info {
-background-color: #6A5CC2;
+background-color: black;
 font-size: 25px;
 color: white;
 }
 
 .info-landing {
-  background-color: #6A5CC2;
+  background-color: black;
   text-align: center;
   color: white;
   padding-top: 25px;
+  margin-top: 50px;
 }
 
 .info-landing h1 {

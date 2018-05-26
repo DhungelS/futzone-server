@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-responsive-modal';
-
+import { Table, Icon, Divider } from 'antd';
 
 
 import * as actions from '../../actions';
@@ -19,6 +19,8 @@ export class PreviousReviews extends Component {
       matchId: null
     };
   }
+
+ 
   componentDidMount() {
     this.props.fetchAllReviewData();
   }
@@ -58,8 +60,41 @@ export class PreviousReviews extends Component {
   };
 
   render() {
+
+    const columns = [{
+      title: 'Match',
+      dataIndex: 'match',
+      key: 'match',
+      
+    },
+    {
+      title: 'Rating',
+      dataIndex: 'rating',
+      key: 'rating',
+      
+    },
+    {
+      title: 'Review',
+      dataIndex: 'review',
+      key: 'review',
+    }]
+    const prevReviews = [];
+     this.props.reviews.map((review, index) => (
+      //  console.log(review)
+     prevReviews.push({match: review.match, rating: review.rating, review: review.moment })
+    )) 
+    console.log(prevReviews);
     return (
       <React.Fragment>
+          <Table onRow={(record) => {
+    return {
+      onClick: () =>
+      this.onOpenReviewModal(
+        record._id,
+        record.review,
+        record.rating
+      ),       
+    }}} columns={columns} dataSource={prevReviews} />
         <div className="reviews-container">
           <table className="review-tbl">
             <thead>
@@ -71,7 +106,7 @@ export class PreviousReviews extends Component {
             </thead>
 
             <tbody>
-                {this.props.reviews.map((review, index) => (
+                {/* {this.props.reviews.map((review, index) => (
                   <tr
                     key={index}
                     onClick={() =>
@@ -94,7 +129,7 @@ export class PreviousReviews extends Component {
                     <td className="match-rating">{review.rating}</td>
                     <td className="match-review">{review.moment}</td>
                   </tr>
-                ))}
+                ))} */}
             </tbody>
           </table>
         </div>

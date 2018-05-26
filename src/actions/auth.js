@@ -41,8 +41,13 @@ export const login = loginInfo => dispatch => {
     },
     data: JSON.stringify(loginInfo)
   }).then(response => {
+  
     storeAuthInfo(response.data.authToken, dispatch);
-  });
+  }).catch(() => {
+  
+      return Promise.reject(alert("Please use a valid username and password"));
+    
+  })
 };
 
 export const refreshAuthToken = () => (dispatch, getState) => {

@@ -2,7 +2,10 @@ import React,{Component} from 'react';
 import { withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import { login } from '../../actions/';
-import './login.css'
+import { Form, Icon, Input, Button} from 'antd';
+import './login.css';
+const FormItem = Form.Item;
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -43,22 +46,23 @@ class Login extends Component {
 			<div className="login">
         <h1>Login</h1>
         <form className="login-form" onSubmit={this.loginHandler}>
-        <label htmlFor="username-input">Username: </label>
-        <input type="text"
-	            id="username-input"
-							name="username"
+        
+				<FormItem>
+        <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }}/>}
 							value={this.state.username}
 	            onChange={this.handleUserNameInput}
               required/>
-              <br/>
-              <label htmlFor="pass-input">Password: </label>
-              <input type="password"
-	            id="pass-input"
-							name="password"
+							
+              </FormItem>
+    
+							<FormItem>
+              <Input
+							prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password"
 							value={this.state.pass}
 	            onChange={this.handlePassInput}
               required/>
-              <button className="login-btn" type="submit">login</button>
+						</FormItem>
+              <Button className="login-btn" htmlType="submit">login</Button>
               </form>
 							</div>
         </div>

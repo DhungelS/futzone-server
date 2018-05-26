@@ -32,6 +32,16 @@ export class Fixtures extends Component {
 
   componentDidMount() {
     this.props.getLeagues();
+    
+  }
+
+  componentWillUnmount() {
+    localStorage.setItem('stepperStatus', JSON.stringify(this.state.currentStep))
+  }
+  
+  componentWillMount(){
+    const rehydrate = JSON.parse(localStorage.getItem('stepperStatus'))
+    this.setState({currentStep: rehydrate})
   }
 
   onOpenReviewModal = (selectedMatch, matchId) => {
@@ -71,7 +81,7 @@ export class Fixtures extends Component {
   handleLeagueSelect = link => {
 
     if(!this.props.teams.length){
-      this.setState({ currentStep: this.state.currentStep + 1})
+      this.setState({ currentStep:  1})
     }
 
     this.setState(
@@ -87,7 +97,7 @@ export class Fixtures extends Component {
   handleTeamSelect(link) {
     
     if(!this.props.matches.length){
-      this.setState({ currentStep: this.state.currentStep + 1})
+      this.setState({ currentStep:  2})
     }
     this.props.getMatches(link);
   }

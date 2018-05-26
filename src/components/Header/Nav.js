@@ -5,11 +5,7 @@ import { Link } from 'react-router-dom';
 import { clearAuth } from '../../actions/actionTypes';
 import { clearAuthToken } from '../../local-storage';
 
-import { Menu, Icon } from 'antd';
-
-
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
+import { Menu } from 'antd';
 
 class Nav extends Component {
   constructor(props) {
@@ -58,9 +54,9 @@ class Nav extends Component {
       //       </Link>
       //     </li>
       //     <li>
-            // <Link to="/fixtures" className="nav-item">
-            //   Fixtures
-            // </Link>
+      // <Link to="/fixtures" className="nav-item">
+      //   Fixtures
+      // </Link>
       //     </li>
       //     <li>
       //       <Link
@@ -83,16 +79,22 @@ class Nav extends Component {
       >
         <Menu.Item key="home">
           <Link to="/" className="nav-item">
-            Home 
+            Home
           </Link>
         </Menu.Item>
         <Menu.Item key="fixtures">
-            <Link to="/fixtures" className="nav-item">
-              Fixtures
-            </Link>
+          <Link to="/fixtures" className="nav-item">
+            Fixtures
+          </Link>
         </Menu.Item>
         <Menu.Item key="reviews">
-
+          <Link
+            to={this.props.loggedIn ? '/reviews' : '/'}
+            className="nav-item"
+            style={{ display: this.props.loggedIn ? 'block' : 'none' }}
+          >
+            Reviews
+          </Link>
         </Menu.Item>
         <Menu.Item key="get-started" style={{ float: 'right' }}>
           {this.renderAuthStatus()}
