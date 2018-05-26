@@ -8,12 +8,7 @@ import { Button } from 'antd';
 import '../Fixtures.css';
 import * as actions from '../../../actions';
 
-const styles = {
-  bounceInUp: {
-    animation: 'x 1s',
-    animationName: Radium.keyframes(bounceInUp, 'bounceInUp')
-  }
-}
+
 
 export function Matches(props) {
 

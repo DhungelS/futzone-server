@@ -322,3 +322,13 @@ form .rating-select{
 
 }
 
+@media(max-width: 1036px){
+  body{
+  overflow-x: hidden
+}
+
+.step{
+  width: 100%;
+}
+}
+

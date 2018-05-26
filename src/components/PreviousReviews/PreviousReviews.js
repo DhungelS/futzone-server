@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-responsive-modal';
-import { Table, Icon, Divider } from 'antd';
+import { Table } from 'antd';
 
 
 import * as actions from '../../actions';
@@ -31,7 +31,8 @@ export class PreviousReviews extends Component {
       moment: this.state.review,
       rating: this.state.rating
     };
-    this.props.updateReviewItem(this.state.matchId, updateItem);
+    this.props.updateReviewItem(this.state.matchId, updateItem)
+    this.setState({openReviewModal: false})
   };
 
   onOpenReviewModal = (matchId, review, rating) => {
@@ -80,13 +81,12 @@ export class PreviousReviews extends Component {
     }]
     const prevReviews = [];
      this.props.reviews.map((review, index) => (
-      //  console.log(review)
-     prevReviews.push({match: review.match, rating: review.rating, review: review.moment })
+     prevReviews.push({match: review.match, rating: review.rating, review: review.moment, _id: review._id,  key:index })
     )) 
-    console.log(prevReviews);
+
     return (
       <React.Fragment>
-          <Table onRow={(record) => {
+          <Table pagination={false}className="edit" onRow={(record) => {
     return {
       onClick: () =>
       this.onOpenReviewModal(
@@ -95,44 +95,6 @@ export class PreviousReviews extends Component {
         record.rating
       ),       
     }}} columns={columns} dataSource={prevReviews} />
-        <div className="reviews-container">
-          <table className="review-tbl">
-            <thead>
-              <tr className="tbl-header-row">
-                <th>Match</th>
-                <th>Rating</th>
-                <th>Review</th>
-              </tr>
-            </thead>
-
-            <tbody>
-                {/* {this.props.reviews.map((review, index) => (
-                  <tr
-                    key={index}
-                    onClick={() =>
-                      this.onOpenReviewModal(
-                        review._id,
-                        review.moment,
-                        review.rating
-                      )
-                    }
-                      className="tbl-info-row"
-                  >
-                    <td className="match-title">
-                      {' '}
-                      <i
-                        className="fa fa-trash-o fa-fw"
-                        onClick={e => this.reviewDeleteHandler(e, review._id)}
-                      />
-                      {review.match}
-                    </td>
-                    <td className="match-rating">{review.rating}</td>
-                    <td className="match-review">{review.moment}</td>
-                  </tr>
-                ))} */}
-            </tbody>
-          </table>
-        </div>
         <Modal
           classNames={{
             overlay: 'custom-overlay',

@@ -1,6 +1,7 @@
 .landing {
   margin: 0 auto;
   text-align: center;
+  
 }
 
 .banner {
@@ -41,14 +42,18 @@ color: white;
 }
 
 .info-landing {
-  background-color: black;
+  background-color: #e0e0e0;;
   text-align: center;
-  color: white;
+  color: black;
   padding-top: 25px;
-  margin-top: 50px;
+  margin-top: 25px;
+  padding: 40px;
 }
 
+
+
 .info-landing h1 {
+  color: black;
   font-size: 50px;
 }
 
@@ -58,6 +63,53 @@ color: white;
   padding-bottom: 25px;
 }
 
-.step {
- border: 10px  solid black;
+.info-landing li {
+  color: black;
+  font-size: 18px;
+  list-style-type: none;
 }
+
+.step {
+ border: 2px  solid black;
+ width: 50%;
+}
+
+.info-container{
+  margin: 0 auto;
+  text-align: center;  
+  background-color: #e0e0e0;
+  padding: 20px;
+  
+  }
+  
+  .info-container h1 {
+    font-size: 40px;
+    color: black;
+  }
+  
+  .info-container p{
+    color: black;
+    font-size: 28px;
+  }
+  
+  .f-pg p {
+    font-size: 28px;
+    color: white;
+  }
+  
+  .f-pg {
+   display: inline-block;
+   width: 33%;
+   color: white;
+  }
+  
+  .info-progression {
+  margin-top: 25px;  
+  background-color: black;
+  padding-top: 40px;
+  padding-bottom: 25px;
+  color: white;
+  border: 2px solid black;
+  }
+  
+  

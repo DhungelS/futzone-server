@@ -19,7 +19,9 @@ color: white;
   color: green;
   font-size: 25px;
 }
-
+.edit:hover {
+  cursor: pointer;
+}
 .tbl-info-row td, .tbl-header-row th {
   border: 1px solid #ddd;
   padding: 8px;
