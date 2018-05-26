@@ -6,6 +6,7 @@ import Radium, {StyleRoot} from 'radium';
 import { Card } from 'antd';
 import { Button } from 'antd';
 import '../Fixtures.css';
+import './Matches.css'
 import * as actions from '../../../actions';
 
 
@@ -21,6 +22,7 @@ export function Matches(props) {
         on <Moment>{props.match.date}</Moment>
       </p>
       <Button
+       size="large"
         type="primary"
         onClick={() => props.onOpenReviewModal(`${props.match.homeTeamName} VS. ${props.match.awayTeamName}`,`${props.match.homeTeamName}-${props.match.awayTeamName}${props.match.date}`)}
       >
@@ -28,6 +30,7 @@ export function Matches(props) {
       </Button>
       <Button
       style={{marginLeft: '10px'}}
+      size="large"
       type="secondary"
         onClick={() => {
           props.onOpenHighlightsModal(`${props.match.homeTeamName} vs.${props.match.awayTeamName}`);

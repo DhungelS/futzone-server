@@ -35,6 +35,8 @@ export class Fixtures extends Component {
     
   }
 
+  
+
   componentWillUnmount() {
     localStorage.setItem('stepperStatus', JSON.stringify(this.state.currentStep))
   }
@@ -80,8 +82,8 @@ export class Fixtures extends Component {
 
   handleLeagueSelect = link => {
 
-    if(!this.props.teams.length){
-      this.setState({ currentStep:  1})
+    if(!this.props.teams.length && !this.props.matches.length){
+      this.setState({ currentStep:  this.state.currentStep + 1})
     }
 
     this.setState(
@@ -97,7 +99,7 @@ export class Fixtures extends Component {
   handleTeamSelect(link) {
     
     if(!this.props.matches.length){
-      this.setState({ currentStep:  2})
+      this.setState({ currentStep:  this.state.currentStep + 1})
     }
     this.props.getMatches(link);
   }
@@ -126,6 +128,11 @@ export class Fixtures extends Component {
   }
 
   render() {
+
+    window.onbeforeunload = (e) => {
+     localStorage.removeItem('stepperStatus')
+    }
+
     let filtered = this.props.leagues.filter(league => {
       return league.caption
         .toUpperCase()
