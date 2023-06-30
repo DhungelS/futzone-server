@@ -5,11 +5,7 @@ match that you didn't catch yesterday? It's there. Or maybe, you are just tired 
 videos on your favorite matches? Well we have that too. All at your disposal with a click of a button. You can leave reviews, and ratings 
 on matches depending on the quality of the match.
 
-## Screenshots
-
 ## Live-demo
-https://futzone.netlify.com/
-
 
 
 ## Tech Stack
