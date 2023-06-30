@@ -6,9 +6,6 @@ videos on your favorite matches? Well we have that too. All at your disposal wit
 on matches depending on the quality of the match.
 
 ## Screenshots
-![Alt text](https://i.imgur.com/FoJhr6g.jpg)
-![Alt text](https://i.imgur.com/yUQuu2X.jpg)
-![Alt text](https://i.imgur.com/6c2oB3o.jpg)
 
 ## Live-demo
 https://futzone.netlify.com/
