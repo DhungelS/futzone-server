@@ -4,7 +4,8 @@ import reviewReducer from './reviewReducer';
 import soccerApiReducer from './soccerApiReducer';
 import highlightsReducer from './highlightsReducer';
 
-export default combineReducers({
+export default combineReducers(
+{
   auth: authReducer,
   review: reviewReducer,
   soccerData: soccerApiReducer,

@@ -11,7 +11,7 @@ const localStrategy = new LocalStrategy((username, password, done) => {
         return Promise.reject({
           reason: 'Login Error',
           message: 'Incorrect username',
-          location: 'username',
+          location: 'username' ,
           status: 401
         });
       }

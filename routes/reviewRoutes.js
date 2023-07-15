@@ -9,7 +9,7 @@ router.get('/api/reviews', (req, res) => {
   const {id} = req.user;
 
   Review.find({_user: id}).populate('_user').then(results => {
-    res.json(results);
+     res.json(results);
   });
 });
 

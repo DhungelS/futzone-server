@@ -9,7 +9,7 @@ router.get('/', (req, res, next) => {
     .catch(next);
 });
 router.get('/:id', (req, res, next) => {
-  User.findById(req.params.id)
+  User.findById(req.params.id);
     .then(users => res.status(200).json(users))
     .catch(next);
 });
