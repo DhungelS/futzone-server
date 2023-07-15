@@ -8,7 +8,7 @@ class Login extends Component {
     super(props);
     this.state = {
       username: 'demo',
-      pass: 'demo'
+      pass: ' demo'
     };
   }
 	loginHandler = e => {
